@@ -1,0 +1,989 @@
+/* ==========================================================================
+   BUDDHA MEDITATION CENTER — "OPEN HALL" DESIGN SYSTEM
+   v1.0 · Single source of truth for web, email, and social.
+   Read DESIGN.md before changing anything in this file.
+
+   Three principles this file encodes:
+     1. Air before ink.      Whitespace is the material. Default to more.
+     2. One thing at a time. One primary action per screenful.
+     3. Real over rendered.  Real photos, real times, real numbers.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS
+   Colour is defined in oklch so the ramps are perceptually even. Every value
+   below has been contrast-checked against --paper; see the table in DESIGN.md.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* -- Paper ramp. The page is paper, never white. ------------------------ */
+  --paper:        oklch(0.978 0.008 85);   /* page ground                    */
+  --paper-warm:   oklch(0.958 0.014 84);   /* quiet bands, inset panels      */
+  --paper-deep:   oklch(0.928 0.020 82);   /* newsletter, emphasis band      */
+  --paper-edge:   oklch(0.902 0.023 80);   /* footer, deepest surface        */
+
+  /* -- Ink ramp. Warm near-black, never #000. ---------------------------- */
+  --ink:          oklch(0.245 0.015 62);   /* headings, primary button fill  */
+  --ink-soft:     oklch(0.420 0.018 60);   /* body copy            5.6:1 AA  */
+  --ink-faint:    oklch(0.480 0.016 60);   /* meta, captions       4.6:1 AA  */
+  --ink-ghost:    oklch(0.620 0.014 60);   /* decorative rules only          */
+
+  /* -- Clay. The robe in our own photographs. Brand accent. -------------- */
+  --clay:         oklch(0.600 0.108 42);   /* marks, fills, large type       */
+  --clay-text:    oklch(0.470 0.105 40);   /* small text           4.6:1 AA  */
+  --clay-deep:    oklch(0.430 0.098 38);   /* filled button        4.9:1 AA  */
+  --clay-wash:    oklch(0.960 0.018 72);   /* tinted band, warm sand         */
+
+  /* -- Moss. Tertiary. Study, archive, "go further". --------------------- */
+  --moss:         oklch(0.410 0.042 152);
+  --moss-wash:    oklch(0.946 0.016 150);
+
+  /* -- Sand. Highlight and underline sweep. ------------------------------ */
+  --sand:         oklch(0.872 0.050 78);
+
+  /* -- Hairlines. The only borders in the system. ------------------------ */
+  --line:         oklch(0.245 0.015 62 / 0.13);
+  --line-soft:    oklch(0.245 0.015 62 / 0.07);
+  --line-strong:  oklch(0.245 0.015 62 / 0.22);
+
+  /* -- Type families ------------------------------------------------------ */
+  --font-display: "Abhaya Libre", "Noto Serif Sinhala", Georgia, "Times New Roman", serif;
+  --font-ui:      "Source Sans 3", "Noto Sans Sinhala", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* -- Type scale. Minor third (1.25). Clamped, never hard-coded. -------- */
+  --step--2: 0.75rem;     /* 12px · legal, tiny labels            */
+  --step--1: 0.8125rem;   /* 13px · eyebrow, tags                 */
+  --step-0:  1.0625rem;   /* 17px · body                          */
+  --step-1:  1.1875rem;   /* 19px · lede small                    */
+  --step-2:  clamp(1.3125rem, 1.22rem + 0.42vw, 1.5rem);
+  --step-3:  clamp(1.55rem, 1.36rem + 0.85vw, 2rem);
+  --step-4:  clamp(1.9rem, 1.55rem + 1.6vw, 2.9rem);
+  --step-5:  clamp(2.35rem, 1.75rem + 2.7vw, 4.1rem);
+  --step-6:  clamp(2.9rem, 1.9rem + 4.4vw, 5.4rem);   /* home hero only */
+
+  /* -- Space. Nine steps. Nothing outside this scale. -------------------- */
+  --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;
+  --space-4: 1rem;     --space-5: 1.5rem;   --space-6: 2rem;
+  --space-7: 3rem;     --space-8: 4rem;     --space-9: 6rem;
+
+  /* -- Vertical rhythm. Sections breathe on these three values. ---------- */
+  --band:     clamp(3.5rem, 8vw, 7rem);
+  --band-lg:  clamp(5rem, 12vw, 10rem);
+  --band-sm:  clamp(2rem, 4.5vw, 3.5rem);
+
+  /* -- Measures ----------------------------------------------------------- */
+  --wide:     76rem;   /* full layout                       */
+  --mid:      58rem;   /* section intros                    */
+  --prose:    40rem;   /* long-form reading, ~64ch          */
+  --narrow:   32rem;   /* standfirst, form copy             */
+  --gutter:   clamp(1.25rem, 5vw, 4rem);
+
+  /* -- Radii. Photographs are essentially square by design. -------------- */
+  --r-xs:   2px;
+  --r-sm:   4px;
+  --r-md:   10px;
+  --r-pill: 999px;
+  --arch:   50% 50% var(--r-sm) var(--r-sm) / 30% 30% var(--r-sm) var(--r-sm);
+
+  /* -- Motion. Slow enough to read as an exhale. ------------------------- */
+  --ease-breath: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-calm:   cubic-bezier(0.32, 0.72, 0, 1);
+  --t-fast: 200ms;
+  --t-base: 420ms;
+  --t-slow: 900ms;
+
+  /* -- Chrome ------------------------------------------------------------- */
+  --head-h: 4.75rem;
+
+  color-scheme: light;
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET + BASE
+   -------------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--head-h) + var(--space-5));
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Paper grain. 2.6% of a fractal noise, multiplied over everything.
+   This is what keeps the ivory from reading as flat screen-white. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0.026;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.82%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22220%22 height=%22220%22 filter=%22url(%23n)%22/%3E%3C/svg%3E");
+}
+
+img, svg, video { display: block; max-width: 100%; }
+figure { margin: 0; }
+h1, h2, h3, h4, p, ul, ol, dl, dd, blockquote { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--sand); color: var(--ink); }
+
+:focus-visible {
+  outline: 2px solid var(--clay-deep);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+
+.sr {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+.skip {
+  position: absolute; top: -100%; left: var(--space-4); z-index: 300;
+  background: var(--ink); color: var(--paper);
+  padding: var(--space-3) var(--space-5); border-radius: var(--r-pill);
+}
+.skip:focus-visible { top: var(--space-4); }
+
+/* --------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   Display is Abhaya Libre at 500–600. Weight 700+ is reserved for the
+   wordmark. Heavy display type is what made the old site feel corporate.
+   -------------------------------------------------------------------------- */
+
+h1, h2, h3, .display, .h1, .h2, .h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.014em;
+  text-wrap: balance;
+}
+
+.display  { font-size: var(--step-6); line-height: 1.02; letter-spacing: -0.024em; }
+h1, .h1   { font-size: var(--step-5); line-height: 1.05; letter-spacing: -0.02em; }
+h2, .h2   { font-size: var(--step-4); }
+h3, .h3   { font-size: var(--step-3); line-height: 1.14; }
+.h4 {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  line-height: 1.22;
+  color: var(--ink);
+  letter-spacing: -0.008em;
+}
+
+p { text-wrap: pretty; }
+
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clay-text);
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.eyebrow--moss { color: var(--moss); }
+
+.lede {
+  font-size: var(--step-2);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: var(--narrow);
+}
+.lede--wide { max-width: var(--prose); }
+
+.meta {
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
+  line-height: 1.55;
+}
+
+/* The time is the headline. A meditation centre's most valuable content is
+   "Sunday, 5:00 pm" — so it is set in the display face, not as metadata. */
+.time {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 500;
+  color: var(--clay-text);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+.time--sm { font-size: var(--step-1); }
+
+.quiet { color: var(--ink-faint); }
+
+/* Inline link: a clay hairline under the word. */
+.link {
+  color: var(--ink);
+  background-image: linear-gradient(var(--clay), var(--clay));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  padding-bottom: 1px;
+  transition: background-size var(--t-base) var(--ease-calm), color var(--t-fast);
+}
+.link:hover { color: var(--clay-text); background-size: 100% 2px; }
+
+/* Underline that grows from the left over 600ms. Used inside list rows. */
+.grow {
+  background-image: linear-gradient(var(--clay), var(--clay));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size 600ms var(--ease-calm);
+}
+a:hover .grow, a:focus-visible .grow { background-size: 100% 1px; }
+
+/* --------------------------------------------------------------------------
+   4. LAYOUT
+   -------------------------------------------------------------------------- */
+
+.u { width: 100%; margin-inline: auto; padding-inline: var(--gutter); }
+.u-wide   { max-width: calc(var(--wide)   + 2 * var(--gutter)); }
+.u-mid    { max-width: calc(var(--mid)    + 2 * var(--gutter)); }
+.u-prose  { max-width: calc(var(--prose)  + 2 * var(--gutter)); }
+.u-narrow { max-width: calc(var(--narrow) + 2 * var(--gutter)); }
+
+.band     { padding-block: var(--band); }
+.band-lg  { padding-block: var(--band-lg); }
+.band-sm  { padding-block: var(--band-sm); }
+
+.on-warm { background: var(--paper-warm); }
+.on-deep { background: var(--paper-deep); }
+.on-clay { background: var(--clay-wash); }
+.on-moss { background: var(--moss-wash); }
+
+.rule { border: 0; border-top: 1px solid var(--line); height: 0; margin: 0; }
+
+/* Stillness band. A deliberate pause between sections: nothing but a short
+   hairline. Most sites fear empty space; this is the one place we spend it
+   on purpose, and it is the most "meditation" element in the system. */
+.stillness {
+  padding-block: clamp(3rem, 7vw, 6rem);
+  display: grid;
+  place-items: center;
+}
+.stillness::before {
+  content: "";
+  width: 5.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+}
+
+/* Section head: title left, standfirst right, hairline above. */
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: var(--space-4) var(--space-8);
+  align-items: end;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line);
+}
+.head > :first-child { display: grid; gap: var(--space-4); }
+.head p { color: var(--ink-faint); max-width: 30rem; }
+.head--single { grid-template-columns: minmax(0, 1fr); max-width: var(--mid); }
+
+.stack   { display: grid; gap: var(--space-4); align-content: start; }
+.stack-2 { display: grid; gap: var(--space-2); align-content: start; }
+.stack-5 { display: grid; gap: var(--space-5); align-content: start; }
+.stack-6 { display: grid; gap: var(--space-6); align-content: start; }
+.stack-7 { display: grid; gap: var(--space-7); align-content: start; }
+
+/* Asymmetric split. 5/7, never 50/50 — symmetry reads as template. */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(var(--space-6), 6vw, var(--space-9));
+  align-items: center;
+}
+.split--flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+.split--even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.split--top  { align-items: start; }
+
+/* --------------------------------------------------------------------------
+   5. MOTION
+   Reveals are 900ms. Most sites use 400. Nine hundred reads as an exhale.
+   -------------------------------------------------------------------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity var(--t-slow) var(--ease-breath),
+    transform var(--t-slow) var(--ease-breath);
+  transition-delay: var(--delay, 0ms);
+}
+[data-reveal].is-in { opacity: 1; transform: none; }
+
+/* The breath mark. One circle, one page. 4s in · 1.5s hold · 4s out · 1.5s
+   hold — the ratio used in guided practice, not an arbitrary loop. */
+.breath {
+  --breath-size: 2.25rem;
+  width: var(--breath-size);
+  height: var(--breath-size);
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 1px solid var(--clay);
+  display: grid;
+  place-items: center;
+}
+.breath::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--clay);
+  transform: scale(0.42);
+  opacity: 0.22;
+  animation: breathe 11s var(--ease-calm) infinite;
+}
+@keyframes breathe {
+  0%   { transform: scale(0.42); opacity: 0.20; }
+  36%  { transform: scale(0.94); opacity: 0.46; }
+  50%  { transform: scale(0.94); opacity: 0.46; }
+  86%  { transform: scale(0.42); opacity: 0.20; }
+  100% { transform: scale(0.42); opacity: 0.20; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   6. BUTTONS
+   Three only. Ink for the primary action, clay for the one high-intent
+   conversion on a page, ghost for everything secondary. Never a third fill.
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 3rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--r-pill);
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.2;
+  text-align: center;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  transition:
+    background var(--t-base) var(--ease-calm),
+    border-color var(--t-base) var(--ease-calm),
+    color var(--t-base) var(--ease-calm),
+    transform var(--t-fast) var(--ease-calm);
+}
+.btn:hover      { background: oklch(0.32 0.02 60); border-color: oklch(0.32 0.02 60); }
+.btn:active     { transform: translateY(1px); }
+
+.btn--clay      { background: var(--clay-deep); border-color: var(--clay-deep); color: var(--paper); }
+.btn--clay:hover{ background: oklch(0.50 0.105 40); border-color: oklch(0.50 0.105 40); }
+
+.btn--ghost     { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+.btn--ghost:hover { background: var(--paper-warm); border-color: var(--ink-ghost); }
+
+.btn--light     { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.btn--light:hover { background: var(--paper-warm); border-color: var(--paper-warm); }
+
+.btn--sm        { min-height: 2.5rem; padding: 0.35rem 1.1rem; font-size: var(--step--1); }
+
+/* Text action with a trailing rule. The quietest call to action we own. */
+.act {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 600;
+  color: var(--ink);
+  font-size: var(--step-0);
+}
+.act::after {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: var(--clay);
+  transition: width var(--t-base) var(--ease-calm);
+}
+.act:hover::after { width: 2.75rem; }
+
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+
+/* --------------------------------------------------------------------------
+   7. HEADER
+   Solid paper. No blur, no translucency, no scrim. The hairline only appears
+   once the page has moved, so the first fold opens borderless.
+   -------------------------------------------------------------------------- */
+
+.site-head {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--t-base) var(--ease-calm);
+}
+html[data-scrolled] .site-head { border-bottom-color: var(--line); }
+
+.site-head__in {
+  min-height: var(--head-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.brand { display: inline-flex; align-items: center; gap: var(--space-3); }
+.brand img { width: 2.3rem; height: 2.3rem; object-fit: contain; }
+.brand b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.075rem;
+  line-height: 1.1;
+  color: var(--ink);
+  letter-spacing: -0.012em;
+}
+.brand b + span {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+
+.nav { display: flex; align-items: center; gap: var(--space-6); }
+.nav__links { display: flex; align-items: center; gap: var(--space-6); }
+.nav__links a {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding-block: 0.4rem;
+  position: relative;
+  transition: color var(--t-fast);
+}
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--clay);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-base) var(--ease-calm);
+}
+.nav__links a:hover { color: var(--ink); }
+.nav__links a:hover::after,
+.nav__links a[aria-current="page"]::after { transform: scaleX(1); }
+.nav__links a[aria-current="page"] { color: var(--ink); }
+
+.nav__toggle {
+  display: none;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  min-height: 2.75rem;
+}
+.nav__toggle i {
+  display: block;
+  width: 1.25rem;
+  height: 7px;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transition: transform var(--t-base) var(--ease-calm);
+}
+
+/* Full-height paper sheet on small screens. Calm, not a cramped dropdown. */
+.nav__sheet {
+  position: fixed;
+  inset: var(--head-h) 0 0;
+  z-index: 99;
+  background: var(--paper);
+  padding: var(--space-7) var(--gutter) var(--space-8);
+  display: none;
+  flex-direction: column;
+  gap: var(--space-5);
+  overflow-y: auto;
+}
+.nav__sheet.is-open { display: flex; }
+.nav__sheet a {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  color: var(--ink);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--line-soft);
+}
+.nav__sheet .btn,
+.nav__sheet .btn:hover { margin-top: var(--space-3); color: var(--paper); }
+
+/* --------------------------------------------------------------------------
+   8. FIGURES
+   Photographs are whole pictures with square corners. No text is ever laid
+   over a photograph. No rounded-card look — that is the AI-template tell.
+   -------------------------------------------------------------------------- */
+
+.fig {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-xs);
+  background: var(--paper-warm);
+}
+.fig img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.4s var(--ease-calm);
+}
+a:hover > .fig img, a:hover .fig img { transform: scale(1.035); }
+
+.fig--tall   { aspect-ratio: 4 / 5; }
+.fig--square { aspect-ratio: 1 / 1; }
+.fig--photo  { aspect-ratio: 3 / 2; }
+.fig--wide   { aspect-ratio: 21 / 9; }
+.fig--strip  { aspect-ratio: 5 / 2; }
+.fig--portrait { aspect-ratio: 3 / 4; }
+
+/* The arch. One per site, on the home hero. An architectural echo of the
+   shrine doorway, and the reason the home page says "four doors". */
+.fig--arch { border-radius: var(--arch); }
+
+.fig__credit {
+  margin-top: var(--space-3);
+  font-size: var(--step--2);
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   9. HERO
+   -------------------------------------------------------------------------- */
+
+.hero { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem); }
+.hero__text { display: grid; gap: var(--space-5); align-content: center; max-width: 36rem; }
+.hero__text .display { margin-block: var(--space-1) 0; }
+.hero .actions { margin-top: var(--space-3); }
+
+.hero__where {
+  display: grid;
+  gap: var(--space-1);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+  max-width: 26rem;
+}
+
+.page-hero { padding-block: clamp(2.5rem, 5vw, 4rem) clamp(2.5rem, 5vw, 4.5rem); }
+.page-hero .stack-5 { max-width: 34rem; }
+
+.crumb {
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+.crumb a:hover { color: var(--clay-text); }
+
+/* --------------------------------------------------------------------------
+   10. PROOF
+   Numbers on a hairline row, set in the display face. Never four icon cards.
+   -------------------------------------------------------------------------- */
+
+.proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
+.proof--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.proof li { padding-top: var(--space-5); border-top: 1px solid var(--line); }
+.proof b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.1rem, 1.5rem + 2.2vw, 3.1rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.proof span { display: block; margin-top: var(--space-3); color: var(--ink-faint); font-size: var(--step--1); line-height: 1.5; }
+
+/* --------------------------------------------------------------------------
+   11. DOORS — the programme mosaic
+   -------------------------------------------------------------------------- */
+
+.door {
+  display: grid;
+  gap: var(--space-5);
+}
+.door__cap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4) var(--space-6);
+  align-items: end;
+}
+.door__cap .time { grid-column: 1; }
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-7) var(--space-5);
+}
+.tile { display: grid; gap: var(--space-4); align-content: start; }
+.tile__body { display: grid; gap: var(--space-2); }
+.tile h3 { font-size: var(--step-2); font-weight: 600; }
+/* Reserve two lines for the time so titles align across the row even when
+   one programme has a long schedule string. */
+.tile .time { min-height: 2.5em; }
+
+/* --------------------------------------------------------------------------
+   12. RULE LIST — the editorial catalogue row
+   A hairline row with a small square photograph. This replaces card grids
+   everywhere in the system. Cards create visual noise; rules create rhythm.
+   -------------------------------------------------------------------------- */
+
+.rl { border-top: 1px solid var(--line); }
+.rl > li { border-bottom: 1px solid var(--line); }
+.rl > li > a,
+.rl > li > .rl__row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+  gap: var(--space-5) var(--space-6);
+  align-items: center;
+  padding-block: var(--space-5);
+  transition: background var(--t-base) var(--ease-calm);
+}
+.rl > li > a:hover { background: var(--paper-warm); }
+.rl__thumb { width: 6.5rem; aspect-ratio: 1 / 1; overflow: hidden; border-radius: var(--r-xs); background: var(--paper-warm); }
+.rl__thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease-calm); }
+.rl > li > a:hover .rl__thumb img { transform: scale(1.05); }
+.rl__body { display: grid; gap: var(--space-2); }
+.rl__body h3 { font-size: var(--step-2); font-weight: 600; }
+.rl__when { font-size: var(--step--1); color: var(--clay-text); font-weight: 600; letter-spacing: 0.02em; }
+.rl__go { color: var(--ink-faint); font-size: var(--step--1); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+.rl > li > a:hover .rl__go { color: var(--clay-text); }
+
+/* Text-only variant: blog, Dhamma archive, and plain fact lists. */
+.rl--plain > li > a,
+.rl--plain > li > .rl__row { grid-template-columns: minmax(0, 1fr) auto; }
+
+/* --------------------------------------------------------------------------
+   13. INSTRUCTION — "sit with this"
+   One sentence of practice, given away for free, on every major page. This is
+   how a visitor leaves with something even if they never click a button.
+   -------------------------------------------------------------------------- */
+
+.on-clay { border-block: 1px solid var(--line); }
+
+.instruction {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
+  justify-items: center;
+}
+.instruction__q {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.35rem);
+  line-height: 1.32;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.instruction__by { font-size: var(--step--1); color: var(--ink-faint); letter-spacing: 0.06em; }
+
+/* --------------------------------------------------------------------------
+   14. TESTIMONY
+   -------------------------------------------------------------------------- */
+
+.testimony { display: grid; gap: var(--space-5); }
+.testimony blockquote {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.45rem, 1.05rem + 1.7vw, 2.3rem);
+  line-height: 1.3;
+  letter-spacing: -0.014em;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.testimony figcaption { font-size: var(--step--1); color: var(--ink-faint); letter-spacing: 0.04em; }
+
+/* --------------------------------------------------------------------------
+   15. PROSE — long-form MDX output for /blog and /learn
+   -------------------------------------------------------------------------- */
+
+.prose { max-width: var(--prose); display: grid; gap: var(--space-5); font-size: var(--step-1); line-height: 1.75; }
+.prose h2 { font-size: var(--step-3); margin-top: var(--space-6); }
+.prose h3 { font-size: var(--step-2); font-weight: 600; margin-top: var(--space-5); }
+.prose ul { display: grid; gap: var(--space-3); padding-left: var(--space-5); }
+.prose ul li { position: relative; }
+.prose ul li::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-5));
+  top: 0.75em;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+.prose ol { display: grid; gap: var(--space-3); counter-reset: n; padding-left: var(--space-6); }
+.prose ol li { counter-increment: n; position: relative; }
+.prose ol li::before {
+  content: counter(n);
+  position: absolute;
+  left: calc(-1 * var(--space-6));
+  font-family: var(--font-display);
+  color: var(--clay-text);
+  font-size: 1.1em;
+}
+.prose blockquote {
+  padding-left: var(--space-5);
+  border-left: 2px solid var(--clay);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.45;
+  color: var(--ink);
+}
+.prose a { color: var(--ink); box-shadow: inset 0 -1px 0 var(--clay); }
+.prose a:hover { color: var(--clay-text); }
+.prose strong { color: var(--ink); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   16. FORMS + NEWSLETTER
+   -------------------------------------------------------------------------- */
+
+.field { display: grid; gap: var(--space-2); }
+.field > span { font-size: var(--step--1); font-weight: 600; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; }
+
+.input, .prose input, textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.7rem 1rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  transition: border-color var(--t-base) var(--ease-calm);
+}
+.input:focus, textarea:focus { outline: none; border-color: var(--clay); }
+textarea { min-height: 9rem; resize: vertical; line-height: 1.6; }
+
+/* Single-field newsletter. One capsule, one action. */
+.capsule {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  max-width: 27rem;
+  transition: border-color var(--t-base) var(--ease-calm);
+}
+.capsule:focus-within { border-color: var(--clay); }
+.capsule input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.5rem 0.9rem;
+  color: var(--ink);
+}
+.capsule input:focus { outline: none; }
+.capsule input::placeholder { color: var(--ink-faint); }
+
+.newsletter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-7); align-items: center; }
+
+/* --------------------------------------------------------------------------
+   17. FAQ + FACTS
+   -------------------------------------------------------------------------- */
+
+.faq { border-top: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-5);
+  padding-block: var(--space-5);
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--ink);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.85rem; height: 0.85rem;
+  border-right: 1px solid var(--clay);
+  border-bottom: 1px solid var(--clay);
+  transform: rotate(45deg) translate(-3px, -3px);
+  transition: transform var(--t-base) var(--ease-calm);
+}
+.faq details[open] summary::after { transform: rotate(-135deg) translate(-3px, -3px); }
+.faq details > p { padding-bottom: var(--space-5); max-width: var(--prose); color: var(--ink-soft); }
+
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-8); }
+.facts li { padding-block: var(--space-5); border-top: 1px solid var(--line); display: grid; gap: var(--space-2); }
+.facts h3 { font-size: var(--step-2); font-weight: 600; }
+.facts p { color: var(--ink-faint); font-size: var(--step-0); }
+
+/* Numbered steps, used on Visit and Volunteer. */
+.steps { counter-reset: s; border-top: 1px solid var(--line); }
+.steps li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: var(--space-5);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--line);
+}
+.steps li::before {
+  content: counter(s, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  color: var(--clay-text);
+  line-height: 1.3;
+}
+.steps h3 { font-size: var(--step-2); font-weight: 600; margin-bottom: var(--space-2); }
+.steps p { color: var(--ink-faint); }
+
+.map { border-radius: var(--r-xs); overflow: hidden; background: var(--paper-warm); }
+.map iframe { width: 100%; height: 24rem; border: 0; display: block; filter: saturate(0.72) contrast(1.02); }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.tag--clay { color: var(--clay-text); border-color: color-mix(in oklch, var(--clay) 40%, transparent); }
+.tag--moss { color: var(--moss); border-color: color-mix(in oklch, var(--moss) 35%, transparent); }
+
+/* --------------------------------------------------------------------------
+   18. FOOTER
+   -------------------------------------------------------------------------- */
+
+.site-foot { background: var(--paper-warm); border-top: 1px solid var(--line); }
+.foot-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+  gap: var(--space-7) var(--space-6);
+}
+.foot-grid h2 { font-size: var(--step-2); font-weight: 600; margin-bottom: var(--space-4); }
+.foot-col h3 {
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--clay-text);
+  margin-bottom: var(--space-4);
+}
+.foot-col li + li { margin-top: var(--space-2); }
+.foot-col a { color: var(--ink-faint); transition: color var(--t-fast); }
+.foot-col a:hover { color: var(--ink); }
+.foot-addr { color: var(--ink-faint); line-height: 1.8; }
+.foot-addr a:hover { color: var(--ink); }
+
+.colophon {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+}
+.colophon a:hover { color: var(--ink); }
+
+/* --------------------------------------------------------------------------
+   19. RESPONSIVE
+   Three breakpoints. Nothing else.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 62rem) {
+  .split, .split--flip, .split--even, .newsletter { grid-template-columns: minmax(0, 1fr); }
+  .split { gap: var(--space-6); }
+  .split .fig, .split figure { order: -1; }
+  .hero .fig { order: -1; }
+  .head { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fig--arch { border-radius: 50% 50% var(--r-sm) var(--r-sm) / 18% 18% var(--r-sm) var(--r-sm); }
+}
+
+@media (max-width: 52rem) {
+  .nav__links, .nav .btn { display: none; }
+  .nav__toggle { display: inline-flex; }
+  .proof, .proof--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .rl > li > a, .rl > li > .rl__row { grid-template-columns: 4rem minmax(0, 1fr); }
+  .rl__thumb { width: 4rem; }
+  .rl__go { display: none; }
+  .rl--plain > li > a,
+  .rl--plain > li > .rl__row { grid-template-columns: 1fr; }
+  .door__cap { grid-template-columns: 1fr; align-items: start; }
+}
+
+@media (max-width: 34rem) {
+  .tiles { grid-template-columns: 1fr; gap: var(--space-6); }
+  .proof, .proof--4 { grid-template-columns: minmax(0, 1fr); }
+  .foot-grid { grid-template-columns: minmax(0, 1fr); }
+  .brand b + span { display: none; }
+  .actions .btn { width: 100%; }
+  .fig--tall, .fig--portrait { aspect-ratio: 4 / 3; }
+}
+
+@media print {
+  body::after, .site-head, .nav__sheet { display: none; }
+  body { background: #fff; }
+}

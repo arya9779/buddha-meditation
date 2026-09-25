@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Open Hall · Buddha Meditation Center design system</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design_concept/system.css">
+<style>
+  /* Documentation chrome only. Nothing here ships to the website. */
+  .doc { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--space-9); align-items: start; }
+  .toc { position: sticky; top: calc(var(--head-h) + var(--space-6)); display: grid; gap: var(--space-1); }
+  .toc a {
+    font-size: var(--step--1); letter-spacing: 0.04em; color: var(--ink-faint);
+    padding: 0.3rem 0; border-left: 1px solid var(--line); padding-left: var(--space-4);
+    transition: color var(--t-fast), border-color var(--t-fast);
+  }
+  .toc a:hover { color: var(--ink); border-left-color: var(--clay); }
+  .toc b { font-size: var(--step--2); letter-spacing: 0.16em; text-transform: uppercase; color: var(--clay-text); padding-left: var(--space-4); margin-bottom: var(--space-2); }
+
+  .sec { padding-block: var(--space-8) 0; scroll-margin-top: 7rem; }
+  .sec > h2 { padding-top: var(--space-5); border-top: 1px solid var(--line); }
+  .sec > .eyebrow { margin-bottom: var(--space-3); }
+  .sec p.lede { margin-top: var(--space-4); }
+
+  .demo {
+    background: var(--paper-warm); border: 1px solid var(--line);
+    border-radius: var(--r-sm); padding: var(--space-6); margin-top: var(--space-5);
+  }
+  .demo--paper { background: var(--paper); }
+  .demo + .note { margin-top: var(--space-3); }
+  .note { font-size: var(--step--1); color: var(--ink-faint); }
+
+  code, .mono {
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+    font-size: 0.8125rem; letter-spacing: -0.01em;
+  }
+  code { background: var(--paper-deep); padding: 0.1em 0.4em; border-radius: var(--r-xs); color: var(--ink); }
+  pre {
+    margin: var(--space-5) 0 0; padding: var(--space-5); overflow-x: auto;
+    background: var(--ink); color: var(--paper-deep); border-radius: var(--r-sm);
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+    font-size: 0.78rem; line-height: 1.75;
+  }
+  pre b { color: var(--sand); font-weight: 400; }
+  pre i { color: var(--ink-ghost); font-style: normal; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: var(--space-5); font-size: var(--step--1); }
+  th, td { text-align: left; padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 600; color: var(--clay-text); letter-spacing: 0.1em; text-transform: uppercase; font-size: var(--step--2); }
+  td b { color: var(--ink); font-weight: 600; }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
+  .sw { display: grid; gap: var(--space-3); }
+  .sw i { display: block; height: 4.5rem; border-radius: var(--r-sm); border: 1px solid var(--line); }
+  .sw span { display: block; font-size: var(--step--2); line-height: 1.5; }
+  .sw b { display: block; font-size: var(--step--1); color: var(--ink); font-weight: 600; }
+  .sw .mono { color: var(--ink-faint); }
+
+  .ok, .no { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; font-size: var(--step--1); }
+  .ok { color: var(--moss); }
+  .no { color: var(--clay-text); }
+
+  .pair-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr)); gap: var(--space-5); margin-top: var(--space-5); }
+  .pair-grid > div { display: grid; gap: var(--space-3); align-content: start; }
+  .pair-grid .demo { margin-top: 0; height: 100%; }
+
+  .scale-row { display: grid; grid-template-columns: 6.5rem 1fr; gap: var(--space-5); align-items: baseline; padding-block: var(--space-4); border-bottom: 1px solid var(--line); }
+  .scale-row > .mono { color: var(--ink-faint); }
+
+  .spacer { display: flex; align-items: center; gap: var(--space-4); padding-block: var(--space-2); }
+  .spacer i { display: block; height: 1.1rem; background: var(--clay); opacity: 0.35; border-radius: 1px; }
+  .spacer .mono { color: var(--ink-faint); white-space: nowrap; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+
+  /* Ecosystem mock-ups */
+  .mock { border: 1px solid var(--line); border-radius: var(--r-sm); overflow: hidden; background: var(--paper); }
+  .mock__bar { padding: var(--space-3) var(--space-4); background: var(--paper-deep); font-size: var(--step--2); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
+  .mock__body { padding: var(--space-6); display: grid; gap: var(--space-4); }
+  .mock--social { aspect-ratio: 1 / 1; display: grid; grid-template-rows: 1fr auto; padding: var(--space-6); background: var(--paper-warm); }
+  .mock--social .q { font-family: var(--font-display); font-size: 1.45rem; line-height: 1.28; color: var(--ink); align-self: center; }
+  .mock--social .f { display: flex; justify-content: space-between; align-items: center; font-size: var(--step--2); letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay-text); font-weight: 600; }
+
+  /* Documentation tables are wide by nature; let them scroll rather than
+     forcing the page sideways. */
+  @media (max-width: 52rem) {
+    table { display: block; overflow-x: auto; }
+    .scale-row { grid-template-columns: 1fr; gap: var(--space-2); }
+    pre { font-size: 0.7rem; }
+  }
+
+  @media (max-width: 68rem) {
+    /* minmax(0, 1fr) so the horizontal contents list scrolls inside its own
+       track instead of widening the page. */
+    .doc { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
+    .toc { position: static; min-width: 0; grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; padding-bottom: var(--space-3); }
+    .toc b { display: none; }
+    .toc a { border-left: 0; border-bottom: 1px solid var(--line); padding: 0.4rem 0.9rem; white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="u u-wide site-head__in">
+    <a class="brand" href="index.html">
+      <img src="../public/images/logo.webp" alt="">
+      <span><b>Open Hall</b><span>BMC design system · v1.0</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <div class="nav__links">
+        <a href="#colour">Colour</a>
+        <a href="#type">Type</a>
+        <a href="#components">Components</a>
+        <a href="#rules">Rules</a>
+      </div>
+      <a class="btn btn--sm" href="../design_concept/index.html">View the site</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="navsheet"><span>Menu</span><i></i></button>
+    </nav>
+  </div>
+  <div class="nav__sheet" id="navsheet">
+    <a href="#colour">Colour</a><a href="#type">Type</a><a href="#space">Space</a>
+    <a href="#components">Components</a><a href="#motion">Motion</a><a href="#photography">Photography</a>
+    <a href="#voice">Voice</a><a href="#ecosystem">Ecosystem</a><a href="#rules">Rules</a><a href="#tokens">Tokens</a>
+    <a class="btn" href="../design_concept/index.html">View the site</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- COVER ---------------------------------------------------------------- -->
+<section class="u u-wide hero">
+  <div class="split">
+    <div class="hero__text">
+      <p class="eyebrow"><span class="breath" aria-hidden="true"></span> Design system · version 1.0</p>
+      <h1 class="display">Open&nbsp;Hall</h1>
+      <p class="lede">One source of truth for the Buddha Meditation Center — the website, the newsletter, the emails and the social feed. Built so that a volunteer who has never met us can pick it up and stay consistent.</p>
+      <div class="actions">
+        <a class="btn" href="../design_concept/index.html">Walk through the site</a>
+        <a class="btn btn--ghost" href="#tokens">Copy the tokens</a>
+      </div>
+      <div class="hero__where">
+        <p class="time">Meditation for anyone, regardless of background.</p>
+        <p class="meta">The vision this system exists to express.</p>
+      </div>
+    </div>
+    <figure class="fig fig--tall fig--arch">
+      <img src="../public/images/meditate-with-monk.webp" alt="A monk sitting in meditation on a stone in still water" style="object-position:center 38%">
+    </figure>
+  </div>
+</section>
+
+<section class="on-clay">
+  <div class="u u-wide band">
+    <div class="instruction">
+      <p class="eyebrow">The problem this solves</p>
+      <p class="instruction__q">Many volunteers have maintained the site over the years, each reaching for their own fonts, colours and spacing. The result is a site whose pages barely look related. Everything below exists so nobody has to invent a value again.</p>
+      <p class="instruction__by">Read this once. Then follow it.</p>
+    </div>
+  </div>
+</section>
+
+<div class="u u-wide band">
+<div class="doc">
+
+<!-- TOC ------------------------------------------------------------------ -->
+<nav class="toc" aria-label="Contents">
+  <b>Contents</b>
+  <a href="#principles">01 · Principles</a>
+  <a href="#colour">02 · Colour</a>
+  <a href="#type">03 · Typography</a>
+  <a href="#space">04 · Space &amp; rhythm</a>
+  <a href="#layout">05 · Layout</a>
+  <a href="#components">06 · Components</a>
+  <a href="#motion">07 · Motion</a>
+  <a href="#photography">08 · Photography</a>
+  <a href="#voice">09 · Voice</a>
+  <a href="#funnel">10 · Funnel</a>
+  <a href="#ecosystem">11 · Ecosystem</a>
+  <a href="#rules">12 · Do &amp; don't</a>
+  <a href="#tokens">13 · Tokens</a>
+  <a href="#agents">14 · For AI agents</a>
+</nav>
+
+<div>
+
+<!-- 01 PRINCIPLES -------------------------------------------------------- -->
+<section class="sec" id="principles">
+  <p class="eyebrow">01 · Principles</p>
+  <h2>Three rules that settle most arguments.</h2>
+  <p class="lede lede--wide">When a decision is not covered by anything below, decide it with these, in order.</p>
+
+  <ul class="steps" style="margin-top:var(--space-6)">
+    <li><div>
+      <h3>Air before ink</h3>
+      <p>Whitespace is the material, not the leftover. When a layout feels wrong the first move is to remove something or add space — never to add a border, a shadow or a background panel. A calm page is mostly empty.</p>
+    </div></li>
+    <li><div>
+      <h3>One thing at a time</h3>
+      <p>One primary action per screenful, one idea per band. Two equally weighted buttons make a visitor pause; a single clear next step does not. Secondary actions are outlined, never filled.</p>
+    </div></li>
+    <li><div>
+      <h3>Real over rendered</h3>
+      <p>Real photographs of our own sessions, real session times, real numbers. No stock imagery, no illustrated monks, no icon sets standing in for a thought. This is also the single best defence against the generic AI-generated look.</p>
+    </div></li>
+  </ul>
+</section>
+
+<!-- 02 COLOUR ------------------------------------------------------------ -->
+<section class="sec" id="colour">
+  <p class="eyebrow">02 · Colour</p>
+  <h2>Paper, ink, clay.</h2>
+  <p class="lede lede--wide">The page is warm paper, never screen white. Type is warm near-black, never <code>#000</code>. One accent — clay — taken from the colour of the robes in our own photographs. Photography carries the rest of the colour; the interface stays quiet underneath it.</p>
+
+  <h3 style="margin-top:var(--space-7)">Paper — surfaces</h3>
+  <div class="swatches">
+    <div class="sw"><i style="background:var(--paper)"></i><span><b>--paper</b><span class="mono">#faf7f2</span><span class="quiet">Page ground. Header. Every default surface.</span></span></div>
+    <div class="sw"><i style="background:var(--paper-warm)"></i><span><b>--paper-warm</b><span class="mono">#f6f1e7</span><span class="quiet">Quiet bands, footer, hover state on rows.</span></span></div>
+    <div class="sw"><i style="background:var(--paper-deep)"></i><span><b>--paper-deep</b><span class="mono">#eee6d9</span><span class="quiet">The newsletter band. One band per page, at most.</span></span></div>
+    <div class="sw"><i style="background:var(--clay-wash)"></i><span><b>--clay-wash</b><span class="mono">#faf0e5</span><span class="quiet">The "sit with this" band. Warm, never pink.</span></span></div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Ink — type</h3>
+  <div class="swatches">
+    <div class="sw"><i style="background:var(--ink)"></i><span><b>--ink</b><span class="mono">#261f19 · 15.3:1</span><span class="quiet">Headings and the primary button fill.</span></span></div>
+    <div class="sw"><i style="background:var(--ink-soft)"></i><span><b>--ink-soft</b><span class="mono">#554b43 · 8.0:1</span><span class="quiet">Body copy. The default text colour.</span></span></div>
+    <div class="sw"><i style="background:var(--ink-faint)"></i><span><b>--ink-faint</b><span class="mono">#655c55 · 6.2:1</span><span class="quiet">Meta, captions, footer links.</span></span></div>
+    <div class="sw"><i style="background:var(--ink-ghost)"></i><span><b>--ink-ghost</b><span class="mono">#8d847e · 3.4:1</span><span class="quiet">Decorative rules only. Never for text.</span></span></div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Clay &amp; moss — accents</h3>
+  <div class="swatches">
+    <div class="sw"><i style="background:var(--clay)"></i><span><b>--clay</b><span class="mono">#b6694b · 3.9:1</span><span class="quiet">Marks, underlines, the breath circle. Large type only.</span></span></div>
+    <div class="sw"><i style="background:var(--clay-text)"></i><span><b>--clay-text</b><span class="mono">#8b432a · 6.7:1</span><span class="quiet">Eyebrows, session times, small accented text.</span></span></div>
+    <div class="sw"><i style="background:var(--clay-deep)"></i><span><b>--clay-deep</b><span class="mono">#7c3a25 · 8.0:1</span><span class="quiet">The one filled accent button per page. Giving, mostly.</span></span></div>
+    <div class="sw"><i style="background:var(--moss)"></i><span><b>--moss</b><span class="mono">#39513f · 8.1:1</span><span class="quiet">Tertiary. Study, the Dhamma archive, "go further".</span></span></div>
+    <div class="sw"><i style="background:var(--sand)"></i><span><b>--sand</b><span class="mono">#e7d2b1</span><span class="quiet">Text selection and highlight only.</span></span></div>
+    <div class="sw"><i style="background:var(--moss-wash)"></i><span><b>--moss-wash</b><span class="mono">#e6f0e8</span><span class="quiet">Optional band on /learn. Use sparingly.</span></span></div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Contrast, checked</h3>
+  <p class="note">Ratios are against <code>--paper</code>. Everything used for body-size text clears WCAG AA (4.5:1); most clear AAA (7:1).</p>
+  <table>
+    <thead><tr><th>Token</th><th>On paper</th><th>Rating</th><th>Allowed for</th></tr></thead>
+    <tbody>
+      <tr><td><b>--ink</b></td><td>15.3 : 1</td><td>AAA</td><td>Anything</td></tr>
+      <tr><td><b>--ink-soft</b></td><td>8.0 : 1</td><td>AAA</td><td>Body copy at any size</td></tr>
+      <tr><td><b>--ink-faint</b></td><td>6.2 : 1</td><td>AA</td><td>Meta and captions at 13px and up</td></tr>
+      <tr><td><b>--clay-text</b></td><td>6.7 : 1</td><td>AA</td><td>Eyebrows, times, small accented text</td></tr>
+      <tr><td><b>--clay-deep</b></td><td>8.0 : 1</td><td>AAA</td><td>Button fill with <code>--paper</code> text</td></tr>
+      <tr><td><b>--moss</b></td><td>8.1 : 1</td><td>AAA</td><td>Links and labels in the study sections</td></tr>
+      <tr><td><b>--clay</b></td><td>3.9 : 1</td><td>AA large</td><td>24px+ type, rules, marks. <b>Not</b> body text</td></tr>
+      <tr><td><b>--ink-ghost</b></td><td>3.4 : 1</td><td>—</td><td>Hairlines and decoration only. Never text</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:var(--space-7)">Banned</h3>
+  <div class="chips">
+    <span class="tag tag--clay">#1C244B navy</span>
+    <span class="tag tag--clay">#D68B4B amber</span>
+    <span class="tag tag--clay">#000000</span>
+    <span class="tag tag--clay">#FFFFFF</span>
+    <span class="tag tag--clay">Gradient text</span>
+    <span class="tag tag--clay">Purple / indigo "wellness" palettes</span>
+    <span class="tag tag--clay">Drop shadows</span>
+  </div>
+  <p class="note" style="margin-top:var(--space-4)">The old navy read as enterprise software. The old amber was uncomfortable at large areas. Clay is the same warmth without the glare — and it is literally the colour already present in every photograph we own.</p>
+</section>
+
+<!-- 03 TYPE -------------------------------------------------------------- -->
+<section class="sec" id="type">
+  <p class="eyebrow">03 · Typography</p>
+  <h2>Two families, seven sizes.</h2>
+  <p class="lede lede--wide">Abhaya Libre for anything that carries meaning; Source Sans 3 for anything you operate. Both are open source, both cover Latin <em>and</em> Sinhala, and neither appears in the font pool that every AI-generated landing page draws from.</p>
+
+  <div class="pair-grid">
+    <div>
+      <p class="eyebrow">Display · Abhaya Libre</p>
+      <div class="demo demo--paper">
+        <p style="font-family:var(--font-display);font-size:3.2rem;line-height:1.05;letter-spacing:-0.02em;color:var(--ink);font-weight:500">Sit with a monk</p>
+        <p style="font-family:var(--font-display);font-size:1.5rem;color:var(--ink-faint);margin-top:var(--space-3)">බුදු මැදුර · 0123456789</p>
+      </div>
+      <p class="note">Weights 400–600 only. <b>700 is reserved for the wordmark.</b> Heavy display type is exactly what made the previous site feel corporate; the fix for "too heavy" is a lighter weight at a larger size, never a bolder one.</p>
+    </div>
+    <div>
+      <p class="eyebrow">Interface · Source Sans 3</p>
+      <div class="demo demo--paper">
+        <p style="font-size:1.35rem;line-height:1.55;color:var(--ink)">Guided meditation with Buddhist monks in Greater Washington DC. No experience needed.</p>
+        <p style="font-size:var(--step--1);letter-spacing:0.15em;text-transform:uppercase;font-weight:600;color:var(--clay-text);margin-top:var(--space-4)">Reserve a cushion</p>
+      </div>
+      <p class="note">Weights 400 / 500 / 600. Navigation, buttons, body copy, form labels, eyebrows, metadata. Never used above 1.5rem — at that size the display face takes over.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">The scale</h3>
+  <p class="note">A minor third (1.25). Every heading on the site is one of these. If a size is not on this list, it does not exist.</p>
+  <div style="margin-top:var(--space-5)">
+    <div class="scale-row"><span class="mono">--step-6</span><span style="font-family:var(--font-display);font-size:var(--step-6);line-height:1;font-weight:500;color:var(--ink)">Home hero</span></div>
+    <div class="scale-row"><span class="mono">--step-5</span><span style="font-family:var(--font-display);font-size:var(--step-5);line-height:1.05;font-weight:500;color:var(--ink)">Page title</span></div>
+    <div class="scale-row"><span class="mono">--step-4</span><span style="font-family:var(--font-display);font-size:var(--step-4);line-height:1.08;font-weight:500;color:var(--ink)">Section heading</span></div>
+    <div class="scale-row"><span class="mono">--step-3</span><span style="font-family:var(--font-display);font-size:var(--step-3);font-weight:500;color:var(--ink)">Sub-heading</span></div>
+    <div class="scale-row"><span class="mono">--step-2</span><span style="font-family:var(--font-display);font-size:var(--step-2);font-weight:600;color:var(--ink)">Card title, session time, lede</span></div>
+    <div class="scale-row"><span class="mono">--step-1</span><span style="font-size:var(--step-1)">Long-form reading size</span></div>
+    <div class="scale-row"><span class="mono">--step-0</span><span style="font-size:var(--step-0)">Body copy — 17px, line-height 1.7</span></div>
+    <div class="scale-row"><span class="mono">--step--1</span><span style="font-size:var(--step--1)">Metadata, captions, eyebrows</span></div>
+    <div class="scale-row"><span class="mono">--step--2</span><span style="font-size:var(--step--2)">Legal, colophon, tags</span></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Setting</th><th>Value</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><b>Body line-height</b></td><td>1.7</td><td>Loose leading is the cheapest way to make a page feel unhurried.</td></tr>
+      <tr><td><b>Display line-height</b></td><td>1.02 – 1.14</td><td>Large type needs tight leading or it falls apart.</td></tr>
+      <tr><td><b>Display tracking</b></td><td>−0.014em to −0.024em</td><td>Tightens as size grows. Never positive.</td></tr>
+      <tr><td><b>Eyebrow tracking</b></td><td>+0.15em, uppercase</td><td>The only place letter-spacing opens up.</td></tr>
+      <tr><td><b>Reading measure</b></td><td>40rem (~64 characters)</td><td>Prose never runs wider than this, on any screen.</td></tr>
+      <tr><td><b>Balance</b></td><td><code>text-wrap: balance</code> on headings, <code>pretty</code> on paragraphs</td><td>Stops orphans without manual line breaks.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="note" style="margin-top:var(--space-5)"><b>Never use:</b> Inter, Cormorant Garamond, Playfair Display, Fraunces, Instrument Serif, Geist, Source Serif 4. Cormorant + Inter in particular is the signature pairing of 2025–26 AI-generated landing pages, including our own sister site — matching it would date the rebuild before it launched.</p>
+</section>
+
+<!-- 04 SPACE ------------------------------------------------------------- -->
+<section class="sec" id="space">
+  <p class="eyebrow">04 · Space &amp; rhythm</p>
+  <h2>Nine steps, three bands.</h2>
+  <p class="lede lede--wide">Every gap on the site comes from this scale. A value outside it is a bug, and it is the single most common way a design system decays once volunteers start editing.</p>
+
+  <div class="demo" style="display:grid;gap:var(--space-1)">
+    <div class="spacer"><i style="width:0.25rem"></i><span class="mono">--space-1 · 4px</span><span class="note">Tight pairs: a label above its value</span></div>
+    <div class="spacer"><i style="width:0.5rem"></i><span class="mono">--space-2 · 8px</span><span class="note">Inside a caption block</span></div>
+    <div class="spacer"><i style="width:0.75rem"></i><span class="mono">--space-3 · 12px</span><span class="note">Between buttons</span></div>
+    <div class="spacer"><i style="width:1rem"></i><span class="mono">--space-4 · 16px</span><span class="note">Default stack gap</span></div>
+    <div class="spacer"><i style="width:1.5rem"></i><span class="mono">--space-5 · 24px</span><span class="note">Between paragraphs and list rows</span></div>
+    <div class="spacer"><i style="width:2rem"></i><span class="mono">--space-6 · 32px</span><span class="note">Heading to content</span></div>
+    <div class="spacer"><i style="width:3rem"></i><span class="mono">--space-7 · 48px</span><span class="note">Between blocks inside a section</span></div>
+    <div class="spacer"><i style="width:4rem"></i><span class="mono">--space-8 · 64px</span><span class="note">Column gutters on wide layouts</span></div>
+    <div class="spacer"><i style="width:6rem"></i><span class="mono">--space-9 · 96px</span><span class="note">The widest gap we allow</span></div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Vertical rhythm</h3>
+  <table>
+    <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td><b>--band-sm</b></td><td>2 – 3.5rem</td><td>A section that continues the thought above it.</td></tr>
+      <tr><td><b>--band</b></td><td>3.5 – 7rem</td><td>The default. Nearly every section.</td></tr>
+      <tr><td><b>--band-lg</b></td><td>5 – 10rem</td><td>Reserved for a genuine chapter break.</td></tr>
+    </tbody>
+  </table>
+  <p class="note" style="margin-top:var(--space-4)">All three are <code>clamp()</code> values, so a phone gets proportionally less air than a desktop without a single media query.</p>
+</section>
+
+<!-- 05 LAYOUT ------------------------------------------------------------ -->
+<section class="sec" id="layout">
+  <p class="eyebrow">05 · Layout</p>
+  <h2>Asymmetric, hairlined, unboxed.</h2>
+
+  <table>
+    <thead><tr><th>Measure</th><th>Width</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td><b>.u-wide</b></td><td>76rem</td><td>Full layouts: heroes, mosaics, the footer.</td></tr>
+      <tr><td><b>.u-mid</b></td><td>58rem</td><td>Section introductions.</td></tr>
+      <tr><td><b>.u-prose</b></td><td>40rem</td><td>Blog posts and Dhamma articles. Never wider.</td></tr>
+      <tr><td><b>.u-narrow</b></td><td>32rem</td><td>Standfirsts and form copy.</td></tr>
+      <tr><td><b>Gutter</b></td><td>clamp(1.25rem, 5vw, 4rem)</td><td>Page edges, all breakpoints.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:var(--space-7)">The split</h3>
+  <p>Text and photograph sit side by side at <b>5 : 7</b> — never 50 : 50. Symmetry reads as template; a deliberate imbalance reads as a considered page. The photograph is always a whole picture with words beside it, never a background with text laid over it.</p>
+  <div class="demo">
+    <div style="display:grid;grid-template-columns:5fr 7fr;gap:var(--space-5);align-items:center">
+      <div style="background:var(--paper-deep);height:6rem;border-radius:var(--r-xs);display:grid;place-items:center;font-size:var(--step--1);color:var(--ink-faint)">5 — words</div>
+      <div style="background:var(--clay);opacity:0.25;height:9rem;border-radius:var(--r-xs)"></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Three breakpoints, and only three</h3>
+  <table>
+    <thead><tr><th>Width</th><th>What changes</th></tr></thead>
+    <tbody>
+      <tr><td><b>62rem</b> (992px)</td><td>Splits stack, photograph moves above the words, tiles drop to two across.</td></tr>
+      <tr><td><b>52rem</b> (832px)</td><td>Navigation collapses to the menu sheet. Fact grids go single column.</td></tr>
+      <tr><td><b>34rem</b> (544px)</td><td>Tiles go single column, buttons go full width, the place-line leaves the wordmark.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:var(--space-7)">Surfaces</h3>
+  <p>Depth comes from paper tone, never from shadow. There are no cards on this site. A group of things is separated by a hairline and space, which is quieter and ages better than a box.</p>
+  <div class="chips">
+    <span class="tag">Hairlines: 1px at 13% ink</span>
+    <span class="tag">Photo corners: 2px</span>
+    <span class="tag">Buttons: full pill</span>
+    <span class="tag tag--clay">No box-shadow, anywhere</span>
+  </div>
+</section>
+
+<!-- 06 COMPONENTS -------------------------------------------------------- -->
+<section class="sec" id="components">
+  <p class="eyebrow">06 · Components</p>
+  <h2>Everything the site is built from.</h2>
+  <p class="lede lede--wide">Live specimens. Each one is the real component from <code>system.css</code>, not a picture of it.</p>
+
+  <h3 style="margin-top:var(--space-7)">Buttons</h3>
+  <div class="demo">
+    <div class="actions">
+      <a class="btn" href="#components">Reserve this Sunday</a>
+      <a class="btn btn--ghost" href="#components">See all programs</a>
+      <a class="btn btn--clay" href="#components">Give through Zeffy</a>
+      <a class="btn btn--sm" href="#components">Join a sitting</a>
+      <a class="act" href="#components">Read the evaluation report</a>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>Variant</th><th>Fill</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td><b>.btn</b></td><td>Ink</td><td>The primary action. One per screenful.</td></tr>
+      <tr><td><b>.btn--ghost</b></td><td>Outline</td><td>Every secondary action. Never a second filled button.</td></tr>
+      <tr><td><b>.btn--clay</b></td><td>Clay</td><td>One conversion per page, and only where giving or registering is the whole point.</td></tr>
+      <tr><td><b>.act</b></td><td>Text + rule</td><td>The quietest action. The rule grows on hover.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:var(--space-7)">Eyebrow, time, meta</h3>
+  <div class="demo">
+    <p class="eyebrow">This week</p>
+    <p class="time" style="margin-top:var(--space-3)">Sundays, 5:00 – 7:00 pm</p>
+    <p class="meta" style="margin-top:var(--space-2)">5004 Stone Rd, Rockville, MD 20853 · Chairs and cushions provided</p>
+  </div>
+  <p class="note"><b>The time is the headline.</b> A meditation centre's most valuable piece of content is "Sunday, 5:00 pm", so it is set in the display face in clay — not shrunk into grey metadata the way most sites treat it.</p>
+
+  <h3 style="margin-top:var(--space-7)">The breath mark</h3>
+  <div class="demo" style="display:flex;align-items:center;gap:var(--space-5)">
+    <span class="breath" style="--breath-size:3.5rem" aria-hidden="true"></span>
+    <p class="note" style="margin:0;max-width:30rem">One circle, once per page, beside the eyebrow in the hero. It expands and contracts on an <b>11-second cycle — 4s in, 1.5s hold, 4s out, 1.5s hold</b> — the ratio used in guided practice, not a decorative loop. A visitor who watches it for ten seconds has already slowed their breathing. It is the only looping animation in the entire system, and it stops for <code>prefers-reduced-motion</code>.</p>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">The rule list</h3>
+  <p class="note">This replaces card grids everywhere. Cards create visual noise and force every item to the same height; hairline rows create rhythm and let content be its natural length.</p>
+  <div class="demo demo--paper">
+    <ul class="rl">
+      <li><a href="#components">
+        <span class="rl__thumb"><img src="../public/images/shrine-room.jpg" alt="" style="object-position:34% 44%"></span>
+        <span class="rl__body"><span class="rl__when">Sundays, 5:00 – 7:00 pm</span><h3 class="grow">Sunday evening meditation</h3><span class="meta">Buddha Meditation Center, Rockville, MD</span></span>
+        <span class="rl__go">Open</span>
+      </a></li>
+      <li><a href="#components">
+        <span class="rl__thumb"><img src="../public/images/outdoor-group.webp" alt="" style="object-position:center 38%"></span>
+        <span class="rl__body"><span class="rl__when">1st &amp; 3rd Saturday, 9:00 am – 4:00 pm</span><h3 class="grow">Day-long meditation retreat</h3><span class="meta">Buddha Meditation Center, Rockville, MD</span></span>
+        <span class="rl__go">Open</span>
+      </a></li>
+    </ul>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">The photo tile</h3>
+  <div class="demo demo--paper">
+    <div class="tiles">
+      <a class="tile" href="#components">
+        <figure class="fig fig--tall"><img src="../public/images/washington.webp" alt="" style="object-position:55% 34%"></figure>
+        <span class="tile__body">
+          <span class="time time--sm">Public sessions across the DMV</span>
+          <h3 class="grow">Meditate with a Monk</h3>
+          <span class="meta">Community venues and the Rockville monastery</span>
+        </span>
+      </a>
+      <a class="tile" href="#components">
+        <figure class="fig fig--tall"><img src="../public/images/monk-outdoor.jpg" alt="" style="object-position:62% 55%"></figure>
+        <span class="tile__body">
+          <span class="time time--sm">Thursdays, 8:00 – 9:00 pm ET</span>
+          <h3 class="grow">Weekly online meditation</h3>
+          <span class="meta">Zoom</span>
+        </span>
+      </a>
+      <a class="tile" href="#components">
+        <figure class="fig fig--tall"><img src="../public/images/children-3.jpeg" alt="" style="object-position:center 44%"></figure>
+        <span class="tile__body">
+          <span class="time time--sm">Sundays, 9:00 – 11:00 am</span>
+          <h3 class="grow">Mindfulness for children</h3>
+          <span class="meta">Buddha Meditation Center, Rockville, MD</span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Proof</h3>
+  <p class="note">Numbers set in the display face on a hairline row. Never four identical icon cards — that pattern is the visual signature of a template, and it makes real results look invented.</p>
+  <div class="demo demo--paper">
+    <ul class="proof">
+      <li><b>6,000+</b><span>people have joined a session since we opened our doors</span></li>
+      <li><b>4.90 / 5</b><span>average rating across every meditation program we run</span></li>
+      <li><b>82%</b><span>reported relief from sadness after a single sitting</span></li>
+    </ul>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Sit with this</h3>
+  <p class="note">A single instruction, given away free, on every major page. This is the component that satisfies the brief's hardest requirement: <b>a visitor who never clicks anything still leaves with something useful.</b></p>
+  <div class="demo on-clay" style="border-color:var(--line)">
+    <div class="instruction">
+      <p class="eyebrow">Sit with this · one minute</p>
+      <p class="instruction__q">Breathing in a long breath, know that you are breathing in a long breath. That is the whole instruction. Everything after it is practice.</p>
+      <p class="instruction__by">Ānāpānasati Sutta · the first step of sixteen</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Stillness</h3>
+  <p class="note">A band of nothing between chapters — a short hairline and a great deal of air. Most sites are afraid of empty space. This is the one place we spend it deliberately, and it is the most "meditation" element in the system.</p>
+  <div class="demo demo--paper" style="padding:0"><div class="stillness"></div></div>
+
+  <h3 style="margin-top:var(--space-7)">Newsletter capsule</h3>
+  <div class="demo">
+    <form class="capsule" onsubmit="return false">
+      <label class="sr" for="demo-email">Email address</label>
+      <input id="demo-email" type="email" placeholder="you@example.com">
+      <button class="btn" type="submit">Subscribe</button>
+    </form>
+  </div>
+  <p class="note">One field, one button, one sentence of reason above it. Brevo takes the POST directly; there is no intermediate page.</p>
+
+  <h3 style="margin-top:var(--space-7)">Questions</h3>
+  <div class="demo demo--paper">
+    <div class="faq">
+      <details open><summary>Do I need to book?</summary><p>For Sunday evening a reservation helps us set out enough cushions, but nobody is turned away.</p></details>
+      <details><summary>Is there a fee?</summary><p>No. Nothing at the center costs money. There is a donation box near the door and it is entirely optional.</p></details>
+    </div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Tags</h3>
+  <div class="demo"><div class="chips" style="margin:0">
+    <span class="tag">Beginners welcome</span>
+    <span class="tag tag--clay">In person</span>
+    <span class="tag tag--moss">Study</span>
+  </div></div>
+</section>
+
+<!-- 07 MOTION ------------------------------------------------------------ -->
+<section class="sec" id="motion">
+  <p class="eyebrow">07 · Motion</p>
+  <h2>Slow enough to read as an exhale.</h2>
+  <p class="lede lede--wide">Four movements exist on this site. There is no fifth. Motion that draws attention to itself is the opposite of what we are selling.</p>
+
+  <table>
+    <thead><tr><th>Movement</th><th>Duration</th><th>Curve</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td><b>Section reveal</b></td><td>900ms, 90ms stagger</td><td><code>0.16, 1, 0.3, 1</code></td><td>Opacity + 14px rise, once, on scroll into view.</td></tr>
+      <tr><td><b>Photograph hover</b></td><td>1400ms</td><td><code>0.32, 0.72, 0, 1</code></td><td>Scale to 1.035. Slow enough that it reads as drift.</td></tr>
+      <tr><td><b>Underline grow</b></td><td>600ms</td><td><code>0.32, 0.72, 0, 1</code></td><td>A clay hairline extends from the left on hover.</td></tr>
+      <tr><td><b>Breath mark</b></td><td>11s, looping</td><td><code>0.32, 0.72, 0, 1</code></td><td>Once per page, in the hero. The only loop.</td></tr>
+    </tbody>
+  </table>
+  <p class="note" style="margin-top:var(--space-5)">Most sites reveal in 400ms. Nine hundred is deliberate: it is roughly the length of a relaxed out-breath, and it is the difference between a page that feels snappy and a page that feels calm. Every one of these is disabled under <code>prefers-reduced-motion: reduce</code>, and the page is fully usable with JavaScript switched off.</p>
+</section>
+
+<!-- 08 PHOTOGRAPHY ------------------------------------------------------- -->
+<section class="sec" id="photography">
+  <p class="eyebrow">08 · Photography</p>
+  <h2>Photography is the architecture.</h2>
+  <p class="lede lede--wide">The interface is deliberately quiet so the photographs can carry the colour and the feeling. This only works if the photographs are real.</p>
+
+  <div class="pair-grid">
+    <div>
+      <p class="ok">✓ Use</p>
+      <div class="demo">
+        <ul class="stack-3" style="display:grid;gap:var(--space-3);font-size:var(--step--1)">
+          <li>Real photographs of our own sessions, halls and people.</li>
+          <li>Faces with eyes closed, mid-practice. Unposed.</li>
+          <li>Wide shots that show the room is ordinary and welcoming.</li>
+          <li>The building, the grounds, the meal line, the cushions.</li>
+          <li>Whole pictures, square corners, nothing laid over them.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <p class="no">✕ Never</p>
+      <div class="demo">
+        <ul class="stack-3" style="display:grid;gap:var(--space-3);font-size:var(--step--1)">
+          <li>Event posters with burnt-in text (<code>hero-session.webp</code>, <code>day-long-saturday.webp</code>, <code>richmond.jpeg</code>).</li>
+          <li>AI generations — any file named <code>ChatGPT…</code>, <code>Gemini…</code>, <code>Image_fx…</code>.</li>
+          <li>Stock imagery of any kind, especially silhouettes at sunset.</li>
+          <li>Illustrated monks, lotus icons, mandala wallpaper.</li>
+          <li>Product shots (<code>community-meal.jpeg</code> is branded bottles).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">Crops and focal points</h3>
+  <p>Our photographs are mostly landscape phone shots, so a 4:5 tile crop can easily remove the subject. Every file has a declared focal point in <code>scripts/build-concept.mjs</code> (and in the Astro build, in the image data) — set it once, per file, never inline in a page.</p>
+  <table>
+    <thead><tr><th>Ratio</th><th>Class</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td><b>3 : 4</b></td><td>.fig--portrait</td><td>Standing figures. The home hero.</td></tr>
+      <tr><td><b>4 : 5</b></td><td>.fig--tall</td><td>Programme tiles.</td></tr>
+      <tr><td><b>1 : 1</b></td><td>.fig--square</td><td>Inline supporting photographs, list thumbnails.</td></tr>
+      <tr><td><b>3 : 2</b></td><td>.fig--photo</td><td>Page heroes and split sections.</td></tr>
+      <tr><td><b>21 : 9</b></td><td>.fig--wide</td><td>The one wide "door" per page.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:var(--space-7)">The arch</h3>
+  <p>The home hero photograph has an arched top — an architectural echo of a shrine doorway, and the reason the home page can honestly say "four doors". <b>It appears once on the entire site.</b> Used twice it becomes a motif; used everywhere it becomes a theme.</p>
+</section>
+
+<!-- 09 VOICE ------------------------------------------------------------- -->
+<section class="sec" id="voice">
+  <p class="eyebrow">09 · Voice</p>
+  <h2>Friendly, unhurried, specific.</h2>
+  <p class="lede lede--wide">Write like someone who already sat in the hall and is telling a friend what it was like. Do not sell enlightenment; do not sound like a temple brochure that assumes the reader is Buddhist.</p>
+
+  <table>
+    <thead><tr><th>Instead of</th><th>Write</th></tr></thead>
+    <tbody>
+      <tr><td class="quiet">"Embark on a transformative journey of inner peace"</td><td><b>"A quieter mind, one sitting at a time"</b></td></tr>
+      <tr><td class="quiet">"Register now to secure your spot!"</td><td><b>"Reserve a cushion"</b></td></tr>
+      <tr><td class="quiet">"Our world-class instructors"</td><td><b>"A monk talks you through it the whole way"</b></td></tr>
+      <tr><td class="quiet">"Suitable for all experience levels"</td><td><b>"No experience needed, no belief required"</b></td></tr>
+      <tr><td class="quiet">"Unlock your potential"</td><td><b>"82% reported relief from sadness after one sitting"</b></td></tr>
+      <tr><td class="quiet">"Learn more"</td><td><b>"Plan your visit" · "Read the evaluation report"</b></td></tr>
+    </tbody>
+  </table>
+
+  <ul class="steps" style="margin-top:var(--space-6)">
+    <li><div><h3>Say the time and the address</h3><p>Concrete detail builds more trust than any adjective. "Sundays, 5:00 – 7:00 pm, 5004 Stone Rd" does more work than a paragraph about serenity.</p></div></li>
+    <li><div><h3>Answer the unasked question</h3><p>A first-time visitor is quietly worried about doing the wrong thing. Tell them shoes come off, chairs exist, nothing is expected of them.</p></div></li>
+    <li><div><h3>Keep religion out of the first fold</h3><p>Not because we hide it — the About page is explicit — but because the front door is mindfulness for anyone, and the brief is emphatic about that.</p></div></li>
+    <li><div><h3>Never exclaim</h3><p>No exclamation marks, no urgency, no countdown timers. A visitor's journey here runs one to six months. We are not closing a sale this afternoon.</p></div></li>
+  </ul>
+</section>
+
+<!-- 10 FUNNEL ------------------------------------------------------------ -->
+<section class="sec" id="funnel">
+  <p class="eyebrow">10 · Funnel</p>
+  <h2>Where each component does its job.</h2>
+  <p class="lede lede--wide">The site is a six-stage funnel, not a set of pages. This table is how the design system and the content strategy stay attached to each other.</p>
+
+  <table>
+    <thead><tr><th>Stage</th><th>Page</th><th>The component doing the work</th><th>Exit with</th></tr></thead>
+    <tbody>
+      <tr><td><b>1 · Arrive</b></td><td>Home</td><td>Arch hero, breath mark, proof row</td><td>Trust, and a session time</td></tr>
+      <tr><td><b>2 · Believe</b></td><td>Results</td><td>Proof row, four testimonies</td><td>Evidence it works</td></tr>
+      <tr><td><b>3 · Attend</b></td><td>Programs, Visit</td><td>Rule list, steps, questions</td><td>A booked cushion</td></tr>
+      <tr><td><b>4 · Return</b></td><td>Programme details</td><td>"Also in this group", sit-with-this</td><td>A second date</td></tr>
+      <tr><td><b>5 · Serve</b></td><td>Volunteer, Give</td><td>Fact grid, clay button</td><td>An hour, or a gift</td></tr>
+      <tr><td><b>6 · Study</b></td><td>Teachings, Sutta class</td><td>Plain rule list, moss accent</td><td>An article, then a class</td></tr>
+    </tbody>
+  </table>
+  <p class="note" style="margin-top:var(--space-5)"><b>The newsletter capsule appears at the foot of every page</b>, because stage 1 to stage 3 can take months and the email list is what holds someone across that gap. It is the one component that repeats without exception.</p>
+</section>
+
+<!-- 11 ECOSYSTEM --------------------------------------------------------- -->
+<section class="sec" id="ecosystem">
+  <p class="eyebrow">11 · Ecosystem</p>
+  <h2>Beyond the website.</h2>
+  <p class="lede lede--wide">The same paper, the same clay, the same two typefaces. A newsletter that looks like the site is worth more than a newsletter that looks designed.</p>
+
+  <div class="pair-grid">
+    <div>
+      <p class="eyebrow">Weekly email · Brevo</p>
+      <div class="mock">
+        <div class="mock__bar">From: Buddha Meditation Center</div>
+        <div class="mock__body">
+          <p class="eyebrow">This week</p>
+          <p style="font-family:var(--font-display);font-size:1.7rem;line-height:1.1;color:var(--ink)">Sunday, and a note on irritation</p>
+          <p class="time time--sm">Sundays, 5:00 – 7:00 pm</p>
+          <p style="font-size:0.95rem;color:var(--ink-soft)">One paragraph worth reading, then the times. Nothing else. Ever.</p>
+          <p><a class="act" href="#ecosystem">Reserve a cushion</a></p>
+        </div>
+      </div>
+      <p class="note">Single column, 40rem max. Ink button. Photograph at the top only if it is a real one from that week.</p>
+    </div>
+
+    <div>
+      <p class="eyebrow">Instagram · 1:1</p>
+      <div class="mock mock--social">
+        <p class="q">“I came tired and left lighter. The monk did not push a belief.”</p>
+        <p class="f"><span>Kay · after one sitting</span><span class="breath" style="--breath-size:1.5rem" aria-hidden="true"></span></p>
+      </div>
+      <p class="note">Quote posts are display type on warm paper, no photograph. Photo posts are the photograph alone with the caption doing the talking. Never text over an image.</p>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Surface</th><th>Ground</th><th>Type</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td><b>Email</b></td><td>--paper</td><td>Display headline, sans body</td><td>One button, one photo, 40rem wide.</td></tr>
+      <tr><td><b>Newsletter</b></td><td>--paper</td><td>Same</td><td>Times first, reflection second, nothing third.</td></tr>
+      <tr><td><b>Instagram quote</b></td><td>--paper-warm</td><td>Display 500</td><td>Breath mark bottom-right as the signature.</td></tr>
+      <tr><td><b>Instagram photo</b></td><td>The photograph</td><td>None on the image</td><td>All words live in the caption.</td></tr>
+      <tr><td><b>Event poster</b></td><td>--paper</td><td>Display + clay time</td><td>Time biggest after the title. Address always present.</td></tr>
+      <tr><td><b>Slides</b></td><td>--paper</td><td>Display 500</td><td>One idea per slide. No bullet lists of five.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 12 RULES ------------------------------------------------------------- -->
+<section class="sec" id="rules">
+  <p class="eyebrow">12 · Do &amp; don't</p>
+  <h2>How this stays out of the slop.</h2>
+  <p class="lede lede--wide">The brief asked us to avoid the visual pattern common to AI-generated sites. That pattern is not one mistake — it is a specific, listable set of them.</p>
+
+  <div class="pair-grid">
+    <div>
+      <p class="no">✕ The tells we refuse</p>
+      <div class="demo">
+        <ul style="display:grid;gap:var(--space-3);font-size:var(--step--1)">
+          <li>Cormorant or Playfair headlines over Inter body copy</li>
+          <li>Three or four identical icon cards in a row</li>
+          <li>Gradient text, glassmorphism, <code>backdrop-filter</code></li>
+          <li>Purple-to-blue gradient meshes and glowing orbs</li>
+          <li>16px rounded corners on absolutely everything</li>
+          <li>Drop shadows used to fake depth</li>
+          <li>Text laid over a darkened photograph</li>
+          <li>Stock photos of serene people on clifftops</li>
+          <li>Emoji as section icons</li>
+          <li>"Transform your life" hero copy</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <p class="ok">✓ What we do instead</p>
+      <div class="demo">
+        <ul style="display:grid;gap:var(--space-3);font-size:var(--step--1)">
+          <li>Abhaya Libre 500 over Source Sans 3 — Sinhala-capable, rare</li>
+          <li>Hairline rule lists with real thumbnails</li>
+          <li>Flat warm colour; depth from paper tone only</li>
+          <li>A 2.6% paper grain so the ivory is not screen-flat</li>
+          <li>2px corners on photographs, pills only on buttons</li>
+          <li>Hairlines at 13% ink, nothing heavier</li>
+          <li>Whole photographs with the words beside them</li>
+          <li>Our own halls, our own people, phone shots and all</li>
+          <li>Words, set properly</li>
+          <li>The time and the address</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:var(--space-7)">The five that matter most</h3>
+  <ul class="steps" style="margin-top:var(--space-5)">
+    <li><div><h3>Never invent a value</h3><p>If the spacing, size or colour you want is not a token, the answer is the nearest token — not a new number. This is the rule that keeps the system alive after we hand it over.</p></div></li>
+    <li><div><h3>One primary action per screenful</h3><p>Two filled buttons of equal weight is the most common way a calm page turns into a busy one.</p></div></li>
+    <li><div><h3>No card grids</h3><p>Use the rule list. If you genuinely need a grid, use photo tiles — never boxes with borders and shadows.</p></div></li>
+    <li><div><h3>No text over photographs</h3><p>A photograph stays a whole picture. Words sit on the paper beside it.</p></div></li>
+    <li><div><h3>When in doubt, delete</h3><p>Every element on this site has to justify its presence against empty space, and empty space is winning more often than it loses.</p></div></li>
+  </ul>
+</section>
+
+<!-- 13 TOKENS ------------------------------------------------------------ -->
+<section class="sec" id="tokens">
+  <p class="eyebrow">13 · Tokens</p>
+  <h2>Copy this, change nothing.</h2>
+  <p class="lede lede--wide">The complete token set, as it ships in <code>src/styles/tokens.css</code>. Colour is in oklch so the ramps stay perceptually even when someone needs a new step; hex equivalents are in the colour section above for Canva and print.</p>
+
+<pre><i>/* Paper — the page is paper, never white */</i>
+<b>--paper</b>        oklch(0.978 0.008 85)    <i>#faf7f2</i>
+<b>--paper-warm</b>   oklch(0.958 0.014 84)    <i>#f6f1e7</i>
+<b>--paper-deep</b>   oklch(0.928 0.020 82)    <i>#eee6d9</i>
+<b>--paper-edge</b>   oklch(0.902 0.023 80)    <i>#e7ddce</i>
+
+<i>/* Ink — warm near-black, never #000 */</i>
+<b>--ink</b>          oklch(0.245 0.015 62)    <i>#261f19   15.3:1</i>
+<b>--ink-soft</b>     oklch(0.420 0.018 60)    <i>#554b43    8.0:1</i>
+<b>--ink-faint</b>    oklch(0.480 0.016 60)    <i>#655c55    6.2:1</i>
+<b>--ink-ghost</b>    oklch(0.620 0.014 60)    <i>#8d847e    rules only</i>
+
+<i>/* Clay — the robe in our own photographs */</i>
+<b>--clay</b>         oklch(0.600 0.108 42)    <i>#b6694b    large type only</i>
+<b>--clay-text</b>    oklch(0.470 0.105 40)    <i>#8b432a    6.7:1</i>
+<b>--clay-deep</b>    oklch(0.430 0.098 38)    <i>#7c3a25    8.0:1</i>
+<b>--clay-wash</b>    oklch(0.960 0.018 72)    <i>#faf0e5</i>
+
+<i>/* Moss and sand */</i>
+<b>--moss</b>         oklch(0.410 0.042 152)   <i>#39513f    8.1:1</i>
+<b>--moss-wash</b>    oklch(0.946 0.016 150)   <i>#e6f0e8</i>
+<b>--sand</b>         oklch(0.872 0.050 78)    <i>#e7d2b1    selection only</i>
+
+<i>/* Hairlines — the only borders in the system */</i>
+<b>--line</b>         ink / 0.13
+<b>--line-soft</b>    ink / 0.07
+<b>--line-strong</b>  ink / 0.22
+
+<i>/* Type */</i>
+<b>--font-display</b> "Abhaya Libre", "Noto Serif Sinhala", Georgia, serif
+<b>--font-ui</b>      "Source Sans 3", "Noto Sans Sinhala", system-ui, sans-serif
+
+<b>--step--2</b>  0.75rem     <b>--step-2</b>  clamp(1.3125rem, 1.22rem + 0.42vw, 1.5rem)
+<b>--step--1</b>  0.8125rem   <b>--step-3</b>  clamp(1.55rem,   1.36rem + 0.85vw, 2rem)
+<b>--step-0</b>   1.0625rem   <b>--step-4</b>  clamp(1.9rem,    1.55rem + 1.6vw,  2.9rem)
+<b>--step-1</b>   1.1875rem   <b>--step-5</b>  clamp(2.35rem,   1.75rem + 2.7vw,  4.1rem)
+                          <b>--step-6</b>  clamp(2.9rem,    1.9rem + 4.4vw,  5.4rem)
+
+<i>/* Space — nothing outside this scale */</i>
+<b>--space-1</b> 4px   <b>--space-4</b> 16px   <b>--space-7</b> 48px
+<b>--space-2</b> 8px   <b>--space-5</b> 24px   <b>--space-8</b> 64px
+<b>--space-3</b> 12px  <b>--space-6</b> 32px   <b>--space-9</b> 96px
+
+<i>/* Rhythm and measure */</i>
+<b>--band-sm</b>  clamp(2rem, 4.5vw, 3.5rem)     <b>--wide</b>    76rem
+<b>--band</b>     clamp(3.5rem, 8vw, 7rem)       <b>--mid</b>     58rem
+<b>--band-lg</b>  clamp(5rem, 12vw, 10rem)       <b>--prose</b>   40rem
+<b>--gutter</b>   clamp(1.25rem, 5vw, 4rem)      <b>--narrow</b>  32rem
+
+<i>/* Radii — photographs are essentially square */</i>
+<b>--r-xs</b> 2px   <b>--r-sm</b> 4px   <b>--r-md</b> 10px   <b>--r-pill</b> 999px
+<b>--arch</b>  50% 50% 4px 4px / 30% 30% 4px 4px
+
+<i>/* Motion */</i>
+<b>--ease-breath</b>  cubic-bezier(0.16, 1, 0.3, 1)
+<b>--ease-calm</b>    cubic-bezier(0.32, 0.72, 0, 1)
+<b>--t-fast</b> 200ms   <b>--t-base</b> 420ms   <b>--t-slow</b> 900ms</pre>
+</section>
+
+<!-- 14 AGENTS ------------------------------------------------------------ -->
+<section class="sec" id="agents">
+  <p class="eyebrow">14 · For volunteers and AI agents</p>
+  <h2>How to work in this without breaking it.</h2>
+  <p class="lede lede--wide">The site is Astro, the content is files, and the design system is one stylesheet. That combination is deliberately easy for a coding agent — including Vidu — to edit safely.</p>
+
+  <ul class="steps" style="margin-top:var(--space-6)">
+    <li><div><h3>Read three files first</h3><p><code>PRODUCT.md</code> (who we are), <code>DESIGN.md</code> (this system in text), <code>AGENTS.md</code> (how the repo works). An agent that has read those will not invent a colour.</p></div></li>
+    <li><div><h3>Content is data, not markup</h3><p>Programmes live in <code>src/data/programs.ts</code>; the pages are generated from it. Blog and Dhamma articles are <code>.mdx</code> files. Adding a programme means editing one object — never copying a page.</p></div></li>
+    <li><div><h3>Tokens are the only vocabulary</h3><p>Every value in <code>system.css</code> is a variable. A pull request that contains a raw hex code, a raw pixel gap or a new font is wrong by definition, and that rule is simple enough to be checked automatically.</p></div></li>
+    <li><div><h3>Components are local until they repeat three times</h3><p>Do not build an abstraction for a section that appears once. Three uses earns a component; two does not.</p></div></li>
+    <li><div><h3>Photographs need a focal point</h3><p>A new image is not finished until its <code>object-position</code> is recorded alongside it, or it will lose its subject in the first square crop.</p></div></li>
+  </ul>
+
+  <div class="demo" style="margin-top:var(--space-7)">
+    <p class="eyebrow">The one-line test</p>
+    <p style="font-family:var(--font-display);font-size:var(--step-3);line-height:1.25;color:var(--ink);margin-top:var(--space-3)">Would a person who has just sat for forty minutes find this page restful?</p>
+    <p class="note" style="margin-top:var(--space-3)">If the answer is no, the fix is almost always to remove something.</p>
+  </div>
+</section>
+
+</div>
+</div>
+</div>
+
+<section class="on-deep">
+  <div class="u u-wide band">
+    <div class="newsletter">
+      <div class="stack">
+        <p class="eyebrow">Next</p>
+        <h2>See it applied.</h2>
+        <p class="lede">Twenty-one pages built on this system — home, ten programmes, visit, results, giving, volunteering and the archives.</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="../design_concept/index.html">Open the concept site</a>
+        <a class="btn btn--ghost" href="#principles">Back to the top</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="u u-wide band">
+    <div class="colophon" style="margin-top:0;border-top:0;padding-top:0">
+      <p>Open Hall · design system v1.0 · Buddha Meditation Center of Greater Washington DC</p>
+      <p><a href="../design_concept/index.html">Concept site</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="../design_concept/system.js"></script>
+</body>
+</html>

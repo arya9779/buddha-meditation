@@ -1,0 +1,19 @@
+---
+import { site } from "../data/site";
+---
+
+<section class="band-sm">
+  <div class="wrap">
+    <div class="card newsletter">
+      <div>
+        <h2 class="subhead">One short note each week.</h2>
+        <p>The week's sitting times, one paragraph worth reading, and nothing else. Unsubscribe in one click.</p>
+      </div>
+      <form class="field" action={site.brevoForm} method="post" target="_blank">
+        <label class="vh" for="nl-email">Email address</label>
+        <input id="nl-email" name="EMAIL" type="email" required placeholder="you@example.com" autocomplete="email" />
+        <button class="btn-clay" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>

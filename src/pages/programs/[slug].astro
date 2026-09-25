@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ReleaseCard from "../../components/ReleaseCard.astro";
+import { programs, getProgram } from "../../data/programs";
+import { focusOf, programImage } from "../../data/photos";
+
+export function getStaticPaths() {
+  return programs.map((program) => ({ params: { slug: program.slug } }));
+}
+
+const program = getProgram(Astro.params.slug!);
+if (!program) throw new Error("Missing program");
+
+const external = program.ctaHref.startsWith("http");
+const others = programs.filter((item) => item.slug !== program.slug && item.funnel === program.funnel).slice(0, 3);
+const image = programImage(program.slug);
+---
+
+<BaseLayout title={program.title} description={program.summary} image={image}>
+  <section class="wrap band-sm">
+    <div class="split">
+      <div class="page-head">
+        <p class="crumb"><a class="link" href="/programs">Programs</a> · {program.title}</p>
+        <p class="badge">{program.kicker}</p>
+        <h1>{program.title}</h1>
+        <p>{program.summary}</p>
+        <p class="muted">{program.when} · {program.where}</p>
+        <div class="actions">
+          <a class="btn-clay" href={program.ctaHref} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}>
+            {program.ctaLabel}
+          </a>
+          <a class="btn-text" href="/visit">Plan your visit</a>
+        </div>
+      </div>
+      <img src={image} alt={program.imageAlt} style={`object-position:${focusOf(image)};border-radius:24px`} />
+    </div>
+  </section>
+
+  <section class="wrap band-sm split">
+    <div class="prose">
+      {program.body.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+    <div>
+      <p class="badge">What is included</p>
+      <ul class="prose" style="margin-top:16px">
+        {program.includes.map((item) => <li>{item}</li>)}
+      </ul>
+      <p class="badge" style="margin-top:32px">Who it is for</p>
+      <p style="margin-top:12px">{program.audience}</p>
+    </div>
+  </section>
+
+  {
+    others.length > 0 && (
+      <section class="wrap band-sm">
+        <div class="section-head">
+          <h2 class="subhead">If this one does not fit your week.</h2>
+        </div>
+        <div class="grid-3">
+          {others.map((item) => (
+            <ReleaseCard
+              href={item.href}
+              title={item.title}
+              kicker={item.when}
+              copy={item.where}
+              image={programImage(item.slug)}
+              alt={item.imageAlt}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

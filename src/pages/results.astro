@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { testimonials } from "../data/testimonials";
+import { site } from "../data/site";
+
+const order = ["Joe", "Navin", "Sanka", "Kay"];
+const quotes = order.map((name) => testimonials.find((item) => item.name === name)!);
+---
+
+<BaseLayout
+  title="Results"
+  description="6,000+ people, 4.90/5 average rating, 82% reporting relief from sadness after one sitting."
+  image="/images/outdoor-group.webp"
+>
+  <section class="wrap band-sm">
+    <div class="page-head">
+      <p class="crumb"><a class="link" href="/">Home</a> · Results</p>
+      <h1>What people report after sitting with us.</h1>
+      <p>We ask everyone who attends. These are their answers, from the evaluation that ranked us among the best meditation centers in the world.</p>
+      <div class="actions">
+        <a class="btn-clay" href="/programs">Find a session</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="card-feature">
+      <div class="figures figures-4">
+        <p><b>{site.stats.signups}</b><span>people have joined a session since we opened</span></p>
+        <p><b>{site.stats.rating}</b><span>average program rating from attendees</span></p>
+        <p><b>{site.stats.relief}</b><span>reported relief from sadness after one sitting</span></p>
+        <p><b>{site.stats.stress}</b><span>reported a measurable drop in stress</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap band">
+    <div class="section-head">
+      <h2 class="subhead">Four people, four reasons.</h2>
+    </div>
+    <div class="grid-2">
+      {
+        quotes.map((item) => (
+          <figure class="card">
+            <blockquote>“{item.quote}”</blockquote>
+            <figcaption class="muted" style="margin-top:16px">{item.name} · {item.program}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

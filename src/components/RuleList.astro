@@ -1,0 +1,58 @@
+---
+import { focusOf } from "../data/photos";
+
+export type RuleItem = {
+  href: string;
+  when: string;
+  title: string;
+  meta: string;
+  go?: string;
+  image?: string;
+  alt?: string;
+  external?: boolean;
+};
+
+type Props = {
+  items: RuleItem[];
+  plain?: boolean;
+  reveal?: boolean;
+  space?: string;
+};
+
+const { items, plain = false, reveal = false, space } = Astro.props;
+---
+
+<ul
+  class:list={["rl", plain && "rl--plain"]}
+  data-reveal={reveal ? "" : undefined}
+  style={space ? `margin-top:${space}` : undefined}
+>
+  {
+    items.map((item) => (
+      <li>
+        <a
+          href={item.href}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noreferrer" : undefined}
+        >
+          {item.image && (
+            <span class="rl__thumb">
+              <img
+                src={item.image}
+                alt={item.alt ?? ""}
+                style={`object-position:${focusOf(item.image)}`}
+                loading="lazy"
+              />
+            </span>
+          )}
+          <span class="rl__body">
+            <span class="rl__when">{item.when}</span>
+            <h3 class="grow">{item.title}</h3>
+            <span class="meta">{item.meta}</span>
+          </span>
+          <span class="rl__go">{item.go ?? "Open"}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

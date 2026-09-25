@@ -1,0 +1,25 @@
+---
+import { focusOf } from "../data/photos";
+
+type Props = {
+  src: string;
+  alt: string;
+  shape?: string;
+  pos?: string;
+  eager?: boolean;
+};
+
+const { src, alt, shape = "fig--photo", pos, eager = false } = Astro.props;
+const position = pos || focusOf(src);
+---
+
+<figure class={`fig ${shape}`}>
+  <img
+    src={src}
+    alt={alt}
+    style={`object-position:${position}`}
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+    fetchpriority={eager ? "high" : undefined}
+  />
+</figure>

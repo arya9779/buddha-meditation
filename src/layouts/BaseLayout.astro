@@ -1,0 +1,146 @@
+---
+import "../styles/anthropic.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Newsletter from "../components/Newsletter.astro";
+import ViduAgent from "../components/ViduAgent.astro";
+import { site } from "../data/site";
+
+type Props = {
+  title: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+};
+
+const {
+  title,
+  description = site.description,
+  image = "/images/shrine-room.jpg",
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).toString();
+const ogImage = new URL(image, site.url).toString();
+const gaId = import.meta.env.PUBLIC_GA_ID;
+const gtmId = import.meta.env.PUBLIC_GTM_ID;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["BuddhistTemple", "LocalBusiness"],
+  name: site.legalName,
+  alternateName: site.alsoKnownAs,
+  url: site.url,
+  email: site.email,
+  telephone: site.phone,
+  description: site.description,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    postalCode: site.address.postal,
+    addressCountry: site.address.country,
+  },
+  sameAs: [site.social.facebook, site.social.instagram, site.social.youtube],
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Sunday",
+      opens: "17:00",
+      closes: "19:00",
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/images/logo.webp" type="image/webp" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+Sinhala:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+    {
+      gaId && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+          <script is:inline define:vars={{ gaId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", gaId);
+          </script>
+        </>
+      )
+    }
+    {
+      gtmId && (
+        <script is:inline define:vars={{ gtmId }}>
+          (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+            var f = d.getElementsByTagName(s)[0],
+              j = d.createElement(s),
+              dl = l != "dataLayer" ? "&l=" + l : "";
+            j.async = true;
+            j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, "script", "dataLayer", gtmId);
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+      <Newsletter />
+    </main>
+    <Footer />
+    <ViduAgent />
+    <script>
+      const toggle = document.querySelector(".bar__menu");
+      const sheet = document.querySelector(".sheet");
+      if (toggle instanceof HTMLElement && sheet) {
+        const setOpen = (open: boolean) => {
+          sheet.classList.toggle("is-open", open);
+          toggle.setAttribute("aria-expanded", String(open));
+          toggle.textContent = open ? "Close" : "Menu";
+        };
+        toggle.addEventListener("click", () => setOpen(!sheet.classList.contains("is-open")));
+        sheet.addEventListener("click", (event) => {
+          const target = event.target;
+          if (target instanceof Element && target.closest("a")) setOpen(false);
+        });
+        addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && sheet.classList.contains("is-open")) {
+            setOpen(false);
+            toggle.focus();
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

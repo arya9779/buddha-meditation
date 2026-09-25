@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout title="Page not found" description="That address is not on this site. The Sunday sitting still is." noindex>
+  <section class="wrap band">
+    <div class="page-head">
+      <p class="badge">404</p>
+      <h1>This page is not here.</h1>
+      <p>The sitting still is. Start at the programs list, or come on Sunday evening. If you followed an old link, write to {site.email} and we will send the new address.</p>
+      <div class="actions">
+        <a class="btn-clay" href="/programs/sunday-evening">This Sunday</a>
+        <a class="btn-text" href="/programs">Programs</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { focusOf } from "../data/photos";
+---
+
+<BaseLayout
+  title="About"
+  description="A Theravada Buddhist monastery in Rockville, Maryland, running a meditation center open to anyone."
+  image="/images/loku-swamin.webp"
+>
+  <section class="wrap band-sm">
+    <div class="split">
+      <div class="page-head">
+        <p class="crumb"><a class="link" href="/">Home</a> · About</p>
+        <h1>A monastery that keeps its door open.</h1>
+        <p>
+          We are a Theravada Buddhist monastery in Greater Washington DC, and we run a meditation center that anyone can walk into. Those two sentences are the whole of it.
+        </p>
+        <div class="actions">
+          <a class="btn-clay" href="/visit">Come and see</a>
+          <a class="btn-text" href="/results">Our results</a>
+        </div>
+      </div>
+      <img src="/images/loku-swamin.webp" alt="A resident monk smiling during a talk" style={`object-position:${focusOf("/images/loku-swamin.webp")};border-radius:24px`} />
+    </div>
+  </section>
+
+  <section class="wrap band-sm split">
+    <div class="prose">
+      <p>Our vision is short enough to fit on one line: <strong>meditation for anyone, regardless of background.</strong> In practice that means a Sunday evening where a software engineer, a nurse coming off shift, a student and a grandmother all sit in the same room and are taught the same simple thing.</p>
+      <p>The monks here are ordained in the Mahamevnawa tradition of Sri Lanka. They teach breathing meditation and loving-kindness the way it has been taught for a very long time, plainly, without mysticism, and without asking you to believe anything first.</p>
+      <p>Nothing we offer has a price. Teachings, retreats, the Sunday sitting and every online session are given freely. The center is kept running by volunteers and by people who choose to give something back after they have benefited.</p>
+    </div>
+    <article class="card">
+      <img src="/images/sandy-spring.jpg" alt="The grounds outside the center" style={`object-position:${focusOf("/images/sandy-spring.jpg")}`} />
+      <p class="badge">Also known as</p>
+      <h3>Mahamevnawa Meditation Center</h3>
+      <p>Part of an international network of monasteries, with a resident community in Rockville, Maryland.</p>
+    </article>
+  </section>
+
+  <section class="wrap band-sm">
+    <div class="section-head">
+      <h2 class="subhead">Four things we will not change.</h2>
+    </div>
+    <div class="grid-2">
+      <article class="card"><h3>Free, always</h3><p>No program has ever had a fee and none ever will. Giving is welcome; it is never a condition of entry.</p></article>
+      <article class="card"><h3>Beginners first</h3><p>Every session is designed so that a person who has never meditated can follow it from the first minute.</p></article>
+      <article class="card"><h3>No conversion</h3><p>We teach mindfulness to people of every faith and none. You will not be asked to become a Buddhist.</p></article>
+      <article class="card"><h3>Monks who are available</h3><p>You can ask a question at the end of any sitting, or write to us during the week and get a real reply.</p></article>
+    </div>
+  </section>
+
+  <section class="wrap band-sm split">
+    <img src="/images/community-group.jpg" alt="The community gathered outside the center" style={`object-position:${focusOf("/images/community-group.jpg")};border-radius:24px`} />
+    <div>
+      <h2 class="subhead">Mostly, this place is volunteers.</h2>
+      <p style="margin-top:16px">Someone parks the cars, someone makes the tea, someone edits the newsletter you are about to be offered. Many of them arrived the same way you might, as a guest who came once.</p>
+      <p style="margin-top:24px"><a class="link" href="/volunteer">Help out</a></p>
+    </div>
+  </section>
+</BaseLayout>

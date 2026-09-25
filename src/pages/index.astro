@@ -1,0 +1,100 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ReleaseCard from "../components/ReleaseCard.astro";
+import { getProgram } from "../data/programs";
+import { focusOf, programImage } from "../data/photos";
+import { site } from "../data/site";
+
+const sunday = getProgram("sunday-evening")!;
+const doors = ["meditate-with-a-monk", "online", "day-long"].map((slug) => getProgram(slug)!);
+const address = `${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postal}`;
+const facts = [
+  ["Wear anything comfortable", "No robes, no special clothing. Loose trousers help if you plan to sit on the floor."],
+  ["Chairs are always available", "Cushions, benches and chairs are all in the hall. Sit however your body prefers."],
+  ["Nothing is asked of you", "No chanting you must join, no form to fill, no donation expected. You can simply sit at the back."],
+  ["Someone will show you in", "Come a little early and a volunteer will point you to the shoe rack and a seat."],
+];
+---
+
+<BaseLayout
+  title="A quieter mind, one sitting at a time"
+  description="Guided meditation with Buddhist monks in Greater Washington DC. Free, open to anyone, no experience needed."
+  image="/images/meditate-with-monk.webp"
+>
+  <section class="wrap band">
+    <div class="page-head">
+      <h1>A quieter mind, <a class="link" href="/programs/sunday-evening">one sitting</a> at a time.</h1>
+      <p>
+        Guided meditation with Buddhist monks in Greater Washington DC. No experience needed, no belief required, and never a fee. Come and sit.
+        Sundays, 5:00 – 7:00 pm, {address}. Chairs provided, cushions welcome.
+      </p>
+      <div class="actions">
+        <a class="btn-clay" href="/programs/sunday-evening">Reserve this Sunday</a>
+        <a class="btn-text" href="/programs">See all programs</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <article class="card-feature">
+      <p class="badge">What actually happens</p>
+      <h2>It works, and we measured it.</h2>
+      <div class="figures" style="margin-top:32px">
+        <p><b>{site.stats.signups}</b><span>people have joined a session since we opened our doors</span></p>
+        <p><b>{site.stats.rating}</b><span>average rating across every meditation program we run</span></p>
+        <p><b>{site.stats.relief}</b><span>reported relief from sadness after a single sitting</span></p>
+      </div>
+      <p style="margin-top:32px"><a class="link" href="/results">Read the evaluation report</a></p>
+    </article>
+  </section>
+
+  <section class="wrap band">
+    <div class="section-head">
+      <h2 class="subhead">This week</h2>
+      <p>Every one of these is built for a complete beginner. Pick the one that fits your week.</p>
+    </div>
+    <article class="card-feature">
+      <p class="badge">{sunday.when}</p>
+      <h2>{sunday.title}</h2>
+      <p style="margin-top:16px">{sunday.where}. Guided sitting, then a talk and questions.</p>
+      <p style="margin-top:24px"><a class="link" href={sunday.href}>Reserve a cushion</a></p>
+      <img
+        class="plate"
+        src={programImage(sunday.slug)}
+        alt={sunday.imageAlt}
+        style={`object-position:${focusOf(programImage(sunday.slug))}`}
+      />
+    </article>
+    <div class="grid-3" style="margin-top:24px">
+      {
+        doors.map((program) => (
+          <ReleaseCard
+            href={program.href}
+            title={program.title}
+            kicker={program.when}
+            copy={program.where}
+            image={programImage(program.slug)}
+            alt={program.imageAlt}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap band-sm">
+    <div class="section-head">
+      <h2 class="subhead">There is nothing to prepare.</h2>
+    </div>
+    <div class="grid-2">
+      {
+        facts.map(([title, copy]) => (
+          <article class="card">
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))
+      }
+    </div>
+    <p style="margin-top:32px"><a class="link" href="/visit">Plan your visit</a></p>
+  </section>
+</BaseLayout>

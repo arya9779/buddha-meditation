@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { focusOf, programImage } from "../data/photos";
+import { site } from "../data/site";
+
+const address = `${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postal}`;
+const image = programImage("sunday-evening");
+const steps = [
+  ["You arrive", "Shoes off at the entrance. Someone will say hello and point you to a cushion, a bench or a chair."],
+  ["Guided sitting", "About forty minutes. A monk talks you through it the whole way, so there is nothing to remember."],
+  ["A short talk", "Twenty minutes on something practical: attention, irritation, sleep, kindness. Plain language."],
+  ["Questions, then tea", "Ask anything. Then stay for tea if you want to, or slip out quietly if you would rather. Both are normal."],
+];
+const faqs = [
+  ["Do I need to book?", "For Sunday evening a reservation helps us set out enough cushions, but nobody is turned away. Retreats and public sessions do need a ticket because the rooms fill."],
+  ["What if I have never meditated?", "Then you are exactly who the session is designed for. Every sitting begins with the instruction from the beginning, out loud, every week."],
+  ["Is this a religious service?", "No. It is a guided meditation followed by a short talk and questions. You are welcome to stay for the chanting or to skip it."],
+  ["Can I bring my children?", "Yes. There is also a dedicated children's mindfulness session on Sunday mornings, which is usually the better fit under about twelve."],
+  ["Is there a fee?", "No. Nothing at the center costs money. There is a donation box near the door and it is entirely optional."],
+  ["What should I bring?", "Yourself, and socks if you would rather not be barefoot. Shoes come off at the entrance. Everything else is here."],
+];
+---
+
+<BaseLayout title="Visit" description="Plan a first visit to the Buddha Meditation Center in Rockville, Maryland." image={image}>
+  <section class="wrap band-sm">
+    <div class="split">
+      <div class="page-head">
+        <p class="crumb"><a class="link" href="/">Home</a> · Visit</p>
+        <p class="badge">{address}</p>
+        <h1>Plan a first visit.</h1>
+        <p>Come a little early, leave your shoes by the door, and a volunteer will take it from there. Sundays, 5:00 – 7:00 pm. Free parking on site.</p>
+        <div class="actions">
+          <a class="btn-clay" href="/programs/sunday-evening">Reserve a cushion</a>
+          <a class="btn-text" href={site.phoneHref}>Call us</a>
+        </div>
+      </div>
+      <img src={image} alt="The shrine room in Rockville during a Sunday sitting" style={`object-position:${focusOf(image)};border-radius:24px`} />
+    </div>
+  </section>
+
+  <section class="wrap band-sm">
+    <div class="section-head">
+      <h2 class="subhead">What the two hours look like.</h2>
+    </div>
+    <div class="grid-2">
+      {steps.map(([title, copy]) => (
+        <article class="card"><h3>{title}</h3><p>{copy}</p></article>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap band-sm split">
+    <div>
+      <h2 class="subhead">{address}</h2>
+      <p style="margin-top:16px">The building is set back from the road, with free parking on site. Come a little early and a volunteer will meet you at the door.</p>
+      <div class="actions">
+        <a class="btn-text" href={`https://maps.google.com/?q=${encodeURIComponent(site.mapsQuery)}`} target="_blank" rel="noreferrer">Open in Maps</a>
+        <a class="btn-text" href={`mailto:${site.email}`}>Email us</a>
+      </div>
+    </div>
+    <div class="map">
+      <iframe src={site.mapEmbed} title="Map to the Buddha Meditation Center" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <section class="wrap band-sm">
+    <div class="section-head">
+      <h2 class="subhead">Questions we get every week.</h2>
+    </div>
+    <div class="faq">
+      {faqs.map(([question, answer]) => (
+        <details>
+          <summary>{question}</summary>
+          <p>{answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

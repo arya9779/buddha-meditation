@@ -1,0 +1,19 @@
+---
+type Props = {
+  eyebrow: string;
+  text: string;
+  source: string;
+};
+
+const { eyebrow, text, source } = Astro.props;
+---
+
+<section class="on-clay">
+  <div class="u u-wide band">
+    <div class="instruction" data-reveal>
+      <p class="eyebrow">{eyebrow}</p>
+      <p class="instruction__q">{text}</p>
+      <p class="instruction__by">{source}</p>
+    </div>
+  </div>
+</section>

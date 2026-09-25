@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { focusOf } from "../data/photos";
+import { site } from "../data/site";
+
+const jobs = [
+  ["Welcome at the door", "Say hello, hand out cushions, show new people where to leave their shoes. Forty minutes, once a month."],
+  ["Set up the hall", "Chairs, cushions, the sound system. Arrive at four on a Sunday and it is done by half past."],
+  ["Tea and dana", "Help prepare and serve the meal offering, or make tea afterwards so people stay and talk."],
+  ["Photography and social", "Take real photographs of real sessions so this website never has to use stock imagery."],
+  ["Web and writing", "Edit the newsletter, keep programme pages accurate, help maintain the site."],
+  ["Drive someone", "Several regulars do not drive. A lift from Metro on a Sunday is one of the most useful things."],
+];
+---
+
+<BaseLayout
+  title="Volunteer"
+  description="The center is run entirely by volunteers. Here is what needs doing."
+  image="/images/community-group.jpg"
+>
+  <section class="wrap band-sm">
+    <div class="split">
+      <div class="page-head">
+        <p class="crumb"><a class="link" href="/">Home</a> · Volunteer</p>
+        <h1>The center runs on people who stayed for tea.</h1>
+        <p>Nobody here is paid. If you have an hour a month or a skill you are willing to lend, there is almost certainly something useful you could do.</p>
+        <div class="actions">
+          <a class="btn-clay" href={`mailto:${site.email}?subject=Volunteering`}>Offer an hour</a>
+          <a class="btn-text" href="/about">About the center</a>
+        </div>
+      </div>
+      <img src="/images/community-group.jpg" alt="Volunteers and visitors gathered at the center" style={`object-position:${focusOf("/images/community-group.jpg")};border-radius:24px`} />
+    </div>
+  </section>
+  <section class="wrap band-sm">
+    <div class="section-head">
+      <h2 class="subhead">Six jobs that need doing.</h2>
+    </div>
+    <div class="grid-3">
+      {jobs.map(([title, copy]) => (
+        <article class="card"><h3>{title}</h3><p>{copy}</p></article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

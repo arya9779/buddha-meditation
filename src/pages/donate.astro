@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { focusOf } from "../data/photos";
+import { site } from "../data/site";
+
+const gifts = [
+  "Heating, power and the building",
+  "Cushions, benches and hall supplies",
+  "Food offerings for the resident monks",
+  "Retreat venues and travel for public sessions",
+];
+---
+
+<BaseLayout title="Give" description="Teachings are free. Giving keeps the hall open." image="/images/dana-meal.jpg">
+  <section class="wrap band-sm">
+    <div class="split">
+      <div class="page-head">
+        <p class="crumb"><a class="link" href="/">Home</a> · Give</p>
+        <p class="badge">Generosity</p>
+        <h1>Nothing here has a price. Everything here has a cost.</h1>
+        <p>Teachings are given freely and always will be. Giving is how the hall stays heated, the cushions stay clean, and the monks are supported.</p>
+        <div class="actions">
+          <a class="btn-clay" href={site.zeffy.donate} target="_blank" rel="noreferrer">Give through Zeffy</a>
+          <a class="btn-text" href="/volunteer">Give time instead</a>
+        </div>
+      </div>
+      <img src="/images/dana-meal.jpg" alt="The meal offering being served at the center" style={`object-position:${focusOf("/images/dana-meal.jpg")};border-radius:24px`} />
+    </div>
+  </section>
+  <section class="wrap band-sm split">
+    <div class="prose">
+      <p>In this tradition a teaching is never sold. It is offered, and whoever receives it gives back what they can, when they can, if they want to.</p>
+      <p><strong>Zeffy takes no platform fee</strong>, so every dollar you give arrives here. One-off gifts and monthly giving both work the same way.</p>
+      <p>If money is not the thing you have to give right now, that is completely fine. Come and sit. An empty hall helps nobody.</p>
+    </div>
+    <article class="card">
+      <p class="badge">Where it goes</p>
+      <ul class="prose" style="margin-top:16px">
+        {gifts.map((item) => <li>{item}</li>)}
+      </ul>
+    </article>
+  </section>
+</BaseLayout>

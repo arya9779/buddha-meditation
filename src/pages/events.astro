@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ReleaseCard from "../components/ReleaseCard.astro";
+import { programImage } from "../data/photos";
+import { site } from "../data/site";
+
+const events = [
+  {
+    title: "Sunday evening meditation",
+    when: "Every Sunday, 5:00 – 7:00 pm",
+    href: site.eventbrite.sunday,
+    image: programImage("sunday-evening"),
+    alt: "Sunday sitting in the Rockville shrine room",
+    meta: "Buddha Meditation Center, Rockville",
+  },
+  {
+    title: "Day-long meditation retreat",
+    when: "1st & 3rd Saturday, 9:00 am – 4:00 pm",
+    href: site.eventbrite.dayLong,
+    image: programImage("day-long"),
+    alt: "People sitting during a day-long retreat",
+    meta: "Rockville monastery",
+  },
+  {
+    title: "Meditate with a Monk",
+    when: "Public sessions across the DMV",
+    href: site.eventbrite.meditateWithMonk,
+    image: programImage("meditate-with-a-monk"),
+    alt: "A monk teaching a public session",
+    meta: "Community venues",
+  },
+  {
+    title: "Meditate with a Monk, Vienna",
+    when: "Scheduled community venues",
+    href: site.eventbrite.vienna,
+    image: "/images/monk-portrait.jpeg",
+    alt: "A monk teaching in a civic hall",
+    meta: "Vienna, Virginia",
+  },
+];
+---
+
+<BaseLayout title="Events" description="Upcoming meditation sessions, retreats and public evenings." image="/images/monthly-2.jpeg">
+  <section class="wrap band-sm">
+    <div class="page-head">
+      <p class="crumb"><a class="link" href="/">Home</a> · Events</p>
+      <h1>What is coming up.</h1>
+      <p>Public sessions, retreats and weekly sittings. Registration is free. A ticket only helps us count cushions.</p>
+    </div>
+  </section>
+  <section class="wrap band-sm">
+    <div class="grid-2">
+      {
+        events.map((event) => (
+          <ReleaseCard
+            href={event.href}
+            title={event.title}
+            kicker={event.when}
+            copy={event.meta}
+            image={event.image}
+            alt={event.alt}
+            external
+          />
+        ))
+      }
+    </div>
+    <p style="margin-top:32px">The Thursday online sitting runs every week, from wherever you are. <a class="link" href="/programs/online">Weekly online meditation</a>, 8:00 – 9:00 pm ET.</p>
+  </section>
+</BaseLayout>

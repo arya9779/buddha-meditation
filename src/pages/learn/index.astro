@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ReleaseCard from "../../components/ReleaseCard.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("learn"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title="Teachings"
+  description="The Dhamma article archive, for people who want to go further."
+  image="/images/monk-portrait.jpeg"
+>
+  <section class="wrap band-sm">
+    <div class="page-head">
+      <p class="crumb"><a class="link" href="/">Home</a> · Teachings</p>
+      <h1>If you want to go further.</h1>
+      <p>Nothing on this page is required reading. It is here for people who sit for a while and then want to know where the instructions came from.</p>
+      <div class="actions">
+        <a class="btn-clay" href="/programs/sutta-class">Join the sutta class</a>
+      </div>
+    </div>
+  </section>
+  <section class="wrap band-sm">
+    {
+      articles.length === 0 ? (
+        <p>The archive is being brought across. Until a piece is here, sit with the <a class="link" href="/programs/sutta-class">Wednesday sutta class</a>.</p>
+      ) : (
+        <div class="grid-2">
+          {articles.map((post) => (
+            <ReleaseCard
+              href={`/learn/${post.id}`}
+              title={post.data.title}
+              kicker={post.data.sutta ?? post.data.series ?? "Teaching"}
+              copy={post.data.description}
+            />
+          ))}
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

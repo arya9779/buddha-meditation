@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout title="Privacy" description="What we do with your details." image="/images/place.webp">
+  <section class="wrap band-sm">
+    <div class="page-head">
+      <p class="crumb"><a class="link" href="/">Home</a> · Privacy</p>
+      <h1>What we do with your details.</h1>
+      <p>Very little, and we will tell you exactly what.</p>
+    </div>
+    <div class="prose" style="margin-top:32px">
+      <p>If you subscribe to the newsletter we store your email address with Brevo and use it to send you the weekly note. Nothing else. You can unsubscribe from any email and the record is deleted.</p>
+      <h2>Registrations and giving</h2>
+      <p>Event registrations are handled by Eventbrite and giving is handled by Zeffy. Those services hold that data under their own privacy policies. We only see the attendee list and the donation record.</p>
+      <h2>Analytics</h2>
+      <p>We use Google Analytics 4 to count page views and understand which programs people look for. We do not sell data.</p>
+      <h2>Asking us anything</h2>
+      <p>Write to <a href={`mailto:${site.email}`}>{site.email}</a> and a person will reply.</p>
+    </div>
+  </section>
+</BaseLayout>

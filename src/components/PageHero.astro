@@ -1,0 +1,29 @@
+---
+import Fig from "./Fig.astro";
+
+type Props = {
+  eyebrow?: string;
+  title: string;
+  lede: string;
+  image: string;
+  alt: string;
+  shape?: string;
+  pos?: string;
+};
+
+const { eyebrow, title, lede, image, alt, shape = "fig--photo", pos } = Astro.props;
+---
+
+<section class="u u-wide page-hero">
+  <div class="split split--top" data-reveal>
+    <div class="stack-5">
+      <slot name="crumb" />
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      <p class="lede">{lede}</p>
+      <slot name="meta" />
+      <slot name="actions" />
+    </div>
+    <Fig src={image} alt={alt} shape={shape} pos={pos} eager />
+  </div>
+</section>

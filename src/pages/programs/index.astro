@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ReleaseCard from "../../components/ReleaseCard.astro";
+import { programs, programGroups } from "../../data/programs";
+import { programImage } from "../../data/photos";
+---
+
+<BaseLayout
+  title="Programs"
+  description="Ten meditation programs, in person in Rockville and online from anywhere. All free, all beginner-friendly."
+  image="/images/day-long-6.webp"
+>
+  <section class="wrap band-sm">
+    <div class="page-head">
+      <p class="crumb"><a class="link" href="/">Home</a> · Programs</p>
+      <h1>Programs</h1>
+      <p>Grouped by where you are, not by what we call them. Start at the top if this is your first time; the rest will still be here when you want it.</p>
+      <div class="actions">
+        <a class="btn-clay" href="/programs/sunday-evening">Start with Sunday</a>
+        <a class="btn-text" href="/events">Upcoming dates</a>
+      </div>
+    </div>
+  </section>
+
+  {
+    programGroups.map((group) => {
+      const list = programs.filter((program) => program.funnel === group.id);
+      if (!list.length) return null;
+      return (
+        <section class="wrap band-sm">
+          <div class="section-head">
+            <h2 class="subhead">{group.title}</h2>
+            <p>{group.copy}</p>
+          </div>
+          <div class="grid-3">
+            {list.map((program) => (
+              <ReleaseCard
+                href={program.href}
+                title={program.title}
+                kicker={program.when}
+                copy={program.where}
+                image={programImage(program.slug)}
+                alt={program.imageAlt}
+              />
+            ))}
+          </div>
+        </section>
+      );
+    })
+  }
+</BaseLayout>

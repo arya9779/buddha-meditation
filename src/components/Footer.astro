@@ -1,0 +1,53 @@
+---
+import { footerNav, site } from "../data/site";
+
+const address = `${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postal}`;
+---
+
+<footer class="foot">
+  <div class="wrap band">
+    <div class="foot__grid">
+      <div>
+        <a class="foot__mark" href="/">
+          <img src="/images/logo.webp" alt={site.name} width="173" height="120" />
+        </a>
+        <p class="foot__addr">
+          {site.alsoKnownAs}<br />
+          {address}<br />
+          <a href={site.phoneHref}>{site.phone}</a><br />
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </p>
+      </div>
+      <div>
+        <h3>Practice</h3>
+        <ul>
+          {footerNav.practice.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3>Go further</h3>
+        <ul>
+          {footerNav.goFurther.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3>Connect</h3>
+        <ul>
+          <li><a href={site.social.facebook} target="_blank" rel="noreferrer">Facebook</a></li>
+          <li><a href={site.social.instagram} target="_blank" rel="noreferrer">Instagram</a></li>
+          <li><a href={site.social.youtube} target="_blank" rel="noreferrer">YouTube</a></li>
+          <li><a href="/visit">Ask a volunteer</a></li>
+          <li><a href="/about">About us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__end">
+      <p>Teachings are offered freely. The center is run by volunteers.</p>
+      <p><a href="/privacy">Privacy</a></p>
+    </div>
+  </div>
+</footer>

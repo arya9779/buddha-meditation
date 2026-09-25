@@ -1,0 +1,21 @@
+{
+  "name": "bmc-dc",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Buddha Meditation Center of Greater Washington DC \u2014 Astro rebuild.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "node scripts/check-tokens.mjs",
+    "concept": "node scripts/build-concept.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.6",
+    "@astrojs/sitemap": "^3.5.1",
+    "astro": "^5.13.8"
+  }
+}

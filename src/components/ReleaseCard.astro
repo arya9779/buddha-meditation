@@ -1,0 +1,22 @@
+---
+import { focusOf } from "../data/photos";
+
+type Props = {
+  href: string;
+  title: string;
+  kicker: string;
+  copy: string;
+  image?: string;
+  alt?: string;
+  external?: boolean;
+};
+
+const { href, title, kicker, copy, image, alt = "", external = false } = Astro.props;
+---
+
+<a class="card" href={href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}>
+  {image && <img src={image} alt={alt} style={`object-position:${focusOf(image)}`} />}
+  <p class="badge">{kicker}</p>
+  <h3>{title}</h3>
+  <p>{copy}</p>
+</a>

@@ -1,0 +1,5 @@
+---
+const scriptUrl = import.meta.env.PUBLIC_VIDU_SCRIPT_URL;
+---
+
+{scriptUrl && <script is:inline src={scriptUrl} defer />}

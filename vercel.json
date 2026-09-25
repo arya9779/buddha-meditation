@@ -1,0 +1,54 @@
+{
+  "redirects": [
+    { "source": "/contact", "destination": "/visit", "permanent": true },
+    { "source": "/contact-buddha-meditation-center-dc", "destination": "/visit", "permanent": true },
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/about-buddha-meditation-center", "destination": "/about", "permanent": true },
+    { "source": "/from-suffering-to-liberation-learn-buddhism", "destination": "/programs", "permanent": true },
+    { "source": "/support-us", "destination": "/donate", "permanent": true },
+    { "source": "/support-free-meditation-with-donations", "destination": "/donate", "permanent": true },
+    { "source": "/privacy-policy", "destination": "/privacy", "permanent": true },
+    { "source": "/all-events", "destination": "/events", "permanent": true },
+    { "source": "/meditation-events-calendar", "destination": "/events", "permanent": true },
+    { "source": "/evaluation-report-best-meditation-centers-in-the-world", "destination": "/results", "permanent": true },
+    { "source": "/shared-meditation-experiences", "destination": "/results", "permanent": true },
+    { "source": "/useful-links", "destination": "/about", "permanent": true },
+    { "source": "/meditate-with-a-monk", "destination": "/programs/meditate-with-a-monk", "permanent": true },
+    { "source": "/meditate-with-a-monk-dc", "destination": "/programs/meditate-with-a-monk", "permanent": true },
+    { "source": "/meditate-with-a-monk-vienna", "destination": "/events", "permanent": true },
+    { "source": "/sunday-evening-meditation", "destination": "/programs/sunday-evening", "permanent": true },
+    { "source": "/stress-relief-and-mindfulness", "destination": "/programs/online", "permanent": true },
+    { "source": "/monthly-mindful-meditation", "destination": "/programs/monthly", "permanent": true },
+    { "source": "/mindfulness-for-children", "destination": "/programs/children", "permanent": true },
+    { "source": "/day-long-meditation-retreat", "destination": "/programs/day-long", "permanent": true },
+    { "source": "/two-day-meditation-retreat", "destination": "/programs/two-day", "permanent": true },
+    { "source": "/mindfulness-through-buddhist-sutta-class", "destination": "/programs/sutta-class", "permanent": true },
+    { "source": "/sinhala-dhamma-programs", "destination": "/programs/sinhala", "permanent": true },
+    { "source": "/invited-meditation-workshops", "destination": "/programs/workplace", "permanent": true },
+    { "source": "/learn/:category/metta-sutta", "destination": "/learn/metta-sutta", "permanent": true },
+    { "source": "/learn/:category/the-16-steps-of-breathing-meditation", "destination": "/learn/the-16-steps-of-breathing-meditation", "permanent": true },
+    { "source": "/category/:path*", "destination": "/learn", "permanent": true },
+    { "source": "/tag/:path*", "destination": "/learn", "permanent": true },
+    { "source": "/author/:path*", "destination": "/about", "permanent": true },
+    { "source": "/feed", "destination": "/blog", "permanent": true },
+    { "source": "/peace-walk-volunteer-information", "destination": "/volunteer", "permanent": true },
+    { "source": "/walk-for-peace-volunteers", "destination": "/volunteer", "permanent": true },
+    { "source": "/volunteer-instructions-feb-10-dana-program", "destination": "/volunteer", "permanent": true },
+    { "source": "/washington-monument-event-may-23-2026", "destination": "/events", "permanent": true },
+    { "source": "/spring-blood-drive", "destination": "/events", "permanent": true },
+    { "source": "/walk-for-peace-arrival-parking-guide", "destination": "/events", "permanent": true },
+    { "source": "/walk-for-peace-operations-map", "destination": "/events", "permanent": true },
+    { "source": "/invitations-for-the-venerable-sangha-for-walk-for-peace", "destination": "/events", "permanent": true },
+    { "source": "/rsvp-test", "destination": "/", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+/* ==========================================================================
+   OPEN HALL — design tokens
+   Canonical values for the Buddha Meditation Center. Mirrors
+   design_concept/system.css, which is the documented source of truth.
+   Read DESIGN.md before changing anything here.
+
+   Colour is oklch so the ramps stay perceptually even. Hex equivalents and
+   contrast ratios are in the design system document, section 02.
+   ========================================================================== */
+
+:root {
+  /* -- Paper. The page is paper, never white. ---------------------------- */
+  --paper:        oklch(0.978 0.008 85);   /* #faf7f2  page ground           */
+  --paper-warm:   oklch(0.958 0.014 84);   /* #f6f1e7  quiet bands, footer   */
+  --paper-deep:   oklch(0.928 0.020 82);   /* #eee6d9  newsletter band       */
+  --paper-edge:   oklch(0.902 0.023 80);   /* #e7ddce  deepest surface       */
+
+  /* -- Ink. Warm near-black, never #000. --------------------------------- */
+  --ink:          oklch(0.245 0.015 62);   /* #261f19  15.3:1  headings, CTA */
+  --ink-soft:     oklch(0.420 0.018 60);   /* #554b43   8.0:1  body          */
+  --ink-faint:    oklch(0.480 0.016 60);   /* #655c55   6.2:1  meta          */
+  --ink-ghost:    oklch(0.620 0.014 60);   /* #8d847e   3.4:1  rules only    */
+
+  /* -- Clay. The robe in our own photographs. ---------------------------- */
+  --clay:         oklch(0.600 0.108 42);   /* #b6694b   3.9:1  large type    */
+  --clay-text:    oklch(0.470 0.105 40);   /* #8b432a   6.7:1  small text    */
+  --clay-deep:    oklch(0.430 0.098 38);   /* #7c3a25   8.0:1  filled button */
+  --clay-wash:    oklch(0.960 0.018 72);   /* #faf0e5  tinted band           */
+
+  /* -- Moss. Study, archive, "go further". ------------------------------- */
+  --moss:         oklch(0.410 0.042 152);  /* #39513f   8.1:1                */
+  --moss-wash:    oklch(0.946 0.016 150);  /* #e6f0e8                        */
+
+  /* -- Sand. Selection and highlight only. ------------------------------- */
+  --sand:         oklch(0.872 0.050 78);   /* #e7d2b1                        */
+
+  /* -- Hairlines. The only borders in the system. ------------------------ */
+  --line:         oklch(0.245 0.015 62 / 0.13);
+  --line-soft:    oklch(0.245 0.015 62 / 0.07);
+  --line-strong:  oklch(0.245 0.015 62 / 0.22);
+
+  /* -- Type. Display 400–600 only; 700 is the wordmark. ------------------ */
+  --font-display: "Abhaya Libre", "Noto Serif Sinhala", Georgia, "Times New Roman", serif;
+  --font-ui:      "Source Sans 3", "Noto Sans Sinhala", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --step--2: 0.75rem;
+  --step--1: 0.8125rem;
+  --step-0:  1.0625rem;
+  --step-1:  1.1875rem;
+  --step-2:  clamp(1.3125rem, 1.22rem + 0.42vw, 1.5rem);
+  --step-3:  clamp(1.55rem, 1.36rem + 0.85vw, 2rem);
+  --step-4:  clamp(1.9rem, 1.55rem + 1.6vw, 2.9rem);
+  --step-5:  clamp(2.35rem, 1.75rem + 2.7vw, 4.1rem);
+  --step-6:  clamp(2.9rem, 1.9rem + 4.4vw, 5.4rem);   /* home hero only */
+
+  /* -- Space. Nothing outside this scale. -------------------------------- */
+  --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;
+  --space-4: 1rem;     --space-5: 1.5rem;   --space-6: 2rem;
+  --space-7: 3rem;     --space-8: 4rem;     --space-9: 6rem;
+
+  /* -- Vertical rhythm --------------------------------------------------- */
+  --band-sm:  clamp(2rem, 4.5vw, 3.5rem);
+  --band:     clamp(3.5rem, 8vw, 7rem);
+  --band-lg:  clamp(5rem, 12vw, 10rem);
+
+  /* -- Measures ----------------------------------------------------------- */
+  --wide:   76rem;
+  --mid:    58rem;
+  --prose:  40rem;
+  --narrow: 32rem;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+
+  /* -- Radii. Photographs are essentially square by design. -------------- */
+  --r-xs:   2px;
+  --r-sm:   4px;
+  --r-md:   10px;
+  --r-pill: 999px;
+  --arch:   50% 50% var(--r-sm) var(--r-sm) / 30% 30% var(--r-sm) var(--r-sm);
+
+  /* -- Motion. Slow enough to read as an exhale. ------------------------- */
+  --ease-breath: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-calm:   cubic-bezier(0.32, 0.72, 0, 1);
+  --t-fast: 200ms;
+  --t-base: 420ms;
+  --t-slow: 900ms;
+
+  --head-h: 4.75rem;
+
+  color-scheme: light;
+}
+
+/* Courtyard aliases (teak, forest, saffron, gold) were removed when the
+   Astro layout started importing design_concept/system.css directly.
+   This file mirrors the tokens. It is not the stylesheet the site loads.
+   Do not add the old names back. */

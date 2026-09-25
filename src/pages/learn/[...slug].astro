@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("learn");
+  return articles.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const when = post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.image ?? "/images/monk-portrait.jpeg"}>
+  <article class="wrap band">
+    <div class="page-head">
+      <p class="crumb"><a class="link" href="/learn">Teachings</a></p>
+      <p class="badge">{post.data.sutta ?? post.data.series ?? "Teaching"}</p>
+      <h1>{post.data.title}</h1>
+      <p class="muted">{when}</p>
+    </div>
+    <div class="prose" style="margin-top:32px">
+      <Content />
+    </div>
+    <p style="margin-top:32px"><a class="link" href="/programs/sutta-class">Join the sutta class</a></p>
+  </article>
+</BaseLayout>

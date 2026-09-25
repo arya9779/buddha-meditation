@@ -1,0 +1,63 @@
+---
+import { nav, site } from "../data/site";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const here = (href: string) => href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);
+---
+
+<header class="bar">
+  <div class="wrap bar__in">
+    <a class="logo" href="/">
+      <img src="/images/logo.webp" alt="" width="173" height="120" />
+      <span class="logo__text">
+        <strong>{site.name}</strong>
+        <span>Rockville, Maryland</span>
+      </span>
+    </a>
+    <nav aria-label="Main">
+      <div class="bar__links">
+        {
+          nav.map((item) =>
+            item.children ? (
+              <div class="menu">
+                <a href={item.href} aria-current={here(item.href) ? "page" : undefined}>
+                  {item.label}
+                </a>
+                <div class="menu__drop">
+                  {
+                    item.children.map((child) => (
+                      <a href={child.href}>{child.label}</a>
+                    ))
+                  }
+                </div>
+              </div>
+            ) : (
+              <a href={item.href} aria-current={here(item.href) ? "page" : undefined}>
+                {item.label}
+              </a>
+            ),
+          )
+        }
+      </div>
+      <a class="btn-clay" href="/programs/sunday-evening">Join a sitting</a>
+      <button class="bar__menu" type="button" aria-expanded="false" aria-controls="navsheet">Menu</button>
+    </nav>
+  </div>
+  <div class="sheet" id="navsheet">
+    {
+      nav.map((item) => (
+        <>
+          <a href={item.href} aria-current={here(item.href) ? "page" : undefined}>
+            {item.label}
+          </a>
+          {item.children?.map((child) => (
+            <a class="sheet__sub" href={child.href}>
+              {child.label}
+            </a>
+          ))}
+        </>
+      ))
+    }
+    <a class="btn-clay" href="/programs/sunday-evening">Join a sitting</a>
+  </div>
+</header>
