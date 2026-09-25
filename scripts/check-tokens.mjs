@@ -17,7 +17,7 @@ const SCALE = new Set([0, 1, 2, 3, 4, 8, 12, 16, 24, 32, 48, 64, 96]);
 
 const RULES = [
   { id: "raw-hex", re: /#[0-9a-fA-F]{3,8}\b/g, why: "use a colour token" },
-  { id: "banned-font", re: /\b(Cormorant|Playfair|Fraunces|Instrument Serif|Geist)\b/g, why: "typeface outside design_main.md" },
+  { id: "banned-font", re: /\b(Playfair|Fraunces|Instrument Serif|Geist)\b/g, why: "typeface outside the Meditate with a Monk reference" },
   { id: "shadow", re: /box-shadow\s*:\s*(?!none)/g, why: "the system has no shadows (DESIGN.md §6)" },
   { id: "backdrop", re: /backdrop-filter\s*:/g, why: "no glassmorphism (DESIGN.md §12)" },
 ];
