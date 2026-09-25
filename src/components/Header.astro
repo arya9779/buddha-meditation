@@ -21,7 +21,7 @@ const here = (href: string) => href === "/" ? path === "/" : path === href || pa
             item.children ? (
               <div class="menu">
                 <a href={item.href} aria-current={here(item.href) ? "page" : undefined}>
-                  {item.label}
+                  {item.label}<i class="caret" aria-hidden="true"></i>
                 </a>
                 <div class="menu__drop">
                   {
@@ -49,6 +49,7 @@ const here = (href: string) => href === "/" ? path === "/" : path === href || pa
         <>
           <a href={item.href} aria-current={here(item.href) ? "page" : undefined}>
             {item.label}
+            {item.children && <i class="caret" aria-hidden="true"></i>}
           </a>
           {item.children?.map((child) => (
             <a class="sheet__sub" href={child.href}>

@@ -425,17 +425,30 @@ a.card { display: grid; text-decoration: none; color: inherit; }
 .bar__links { display: flex; align-items: center; gap: 2px; }
 .bar__links > a,
 .menu > a {
-  font-family: var(--font-anthropic-serif);
-  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-anthropic-sans);
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: 0;
-  line-height: 1.2;
+  line-height: 1;
   color: var(--color-slate-dark);
   text-decoration: none;
   padding: 8px 8px;
   white-space: nowrap;
   transition: color 0.15s linear;
 }
+.caret {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  display: inline-block;
+}
+.menu:hover .caret,
+.menu:focus-within .caret { transform: rotate(180deg); }
 .bar__links > a:hover,
 .menu > a:hover,
 .bar__links > a[aria-current="page"],
@@ -457,8 +470,8 @@ a.card { display: grid; text-decoration: none; color: inherit; }
 .menu:hover .menu__drop,
 .menu:focus-within .menu__drop { display: grid; }
 .menu__drop a {
-  font-family: var(--font-anthropic-serif);
-  font-size: 16px;
+  font-family: var(--font-anthropic-sans);
+  font-size: 15px;
   font-weight: 500;
   color: var(--color-slate-dark);
   text-decoration: none;
@@ -483,8 +496,12 @@ a.card { display: grid; text-decoration: none; color: inherit; }
 .sheet { display: none; padding: 8px 32px 32px; }
 .sheet.is-open { display: flex; flex-direction: column; gap: 8px; }
 .sheet a {
-  font-family: var(--font-anthropic-serif);
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-anthropic-sans);
+  font-size: 16px;
+  font-weight: 500;
   color: var(--color-slate-dark);
   text-decoration: none;
   padding: 12px 0;
