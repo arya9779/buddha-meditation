@@ -22,6 +22,7 @@ const here = (href: string) => href === "/" ? path === "/" : path === href || pa
               <div class="menu">
                 <a href={item.href} aria-current={here(item.href) ? "page" : undefined}>
                   {item.label}
+                  <svg class="caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </a>
                 <div class="menu__drop">
                   {
@@ -49,6 +50,7 @@ const here = (href: string) => href === "/" ? path === "/" : path === href || pa
         <>
           <a href={item.href} aria-current={here(item.href) ? "page" : undefined}>
             {item.label}
+            {item.children && <svg class="caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>}
           </a>
           {item.children?.map((child) => (
             <a class="sheet__sub" href={child.href}>
